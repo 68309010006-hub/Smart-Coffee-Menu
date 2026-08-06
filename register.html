@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมัครสมาชิก - Smart Coffee Menu</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* สไตล์เพิ่มเติมสำหรับจัดวาง Layout แถวคู่ของรหัสผ่านตามแบบในรูปภาพ */
+        .form-row-grid {
+            display: flex;
+            gap: 15px;
+        }
+        .form-row-grid .form-group {
+            flex: 1;
+        }
+        .features-badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0 10px 0;
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .switch-page-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .switch-page-text a {
+            color: #3d2514;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .switch-page-text a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 576px) {
+            .form-row-grid {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo-section">
+            <i data-lucide="coffee" style="width:24px; height:24px;"></i>
+            <span>SMART COFFEE MENU</span>
+        </div>
+        
+        <!-- แก้ไขส่วน Navigation Link ให้เชื่อมโยงไปยังหน้าต่างๆ ได้ถูกต้อง -->
+        <nav class="nav-links hidden-mobile">
+            <a href="Menu.html">Menu</a>
+            <a href="recommendations.html">Recommendations</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="about.html">About</a>
+            <a href="login.html" class="btn-admin">เข้าสู่ระบบ (Sign In)</a>
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <div class="login-card">
+
+            <h1>สมัครสมาชิก</h1>
+            <p class="subtitle">เข้าร่วมครอบครัว Smart Coffee Menu เพื่อรับสิทธิพิเศษมากมาย</p>
+
+            <form class="login-form" onsubmit="executeRegister(event)">
+                
+                <!-- ชื่อ-นามสกุล -->
+                <div class="form-group">
+                    <label for="fullname">ชื่อ - นามสกุล</label>
+                    <div class="input-relative">
+                        <span class="input-icon-left">
+                            <i data-lucide="user" style="width:20px; height:20px;"></i>
+                        </span>
+                        <input type="text" id="fullname" name="fullname" placeholder="กรอกชื่อและนามสกุลของคุณ" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- อีเมล -->
+                <div class="form-group">
+                    <label for="email">อีเมล</label>
+                    <div class="input-relative">
+                        <span class="input-icon-left">
+                            <i data-lucide="mail" style="width:20px; height:20px;"></i>
+                        </span>
+                        <input type="email" id="email" name="email" placeholder="example@coffee.com" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- เบอร์โทรศัพท์ -->
+                <div class="form-group">
+                    <label for="phone">เบอร์โทรศัพท์</label>
+                    <div class="input-relative">
+                        <span class="input-icon-left">
+                            <i data-lucide="phone" style="width:20px; height:20px;"></i>
+                        </span>
+                        <input type="tel" id="phone" name="phone" placeholder="08x-xxx-xxxx" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- รหัสผ่าน และ ยืนยันรหัสผ่าน -->
+                <div class="form-row-grid">
+                    <div class="form-group">
+                        <label for="password">รหัสผ่าน</label>
+                        <div class="input-relative">
+                            <span class="input-icon-left">
+                                <i data-lucide="lock" style="width:20px; height:20px;"></i>
+                            </span>
+                            <input type="password" id="password" name="password" placeholder="••••••••" class="form-control" required>
+                            <button type="button" onclick="togglePassword('password', 'pwd-icon')" class="password-toggle">
+                                <i data-lucide="eye" id="pwd-icon" style="width:20px; height:20px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">ยืนยันรหัสผ่าน</label>
+                        <div class="input-relative">
+                            <span class="input-icon-left">
+                                <i data-lucide="refresh-cw" style="width:20px; height:20px;"></i>
+                            </span>
+                            <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" class="form-control" required>
+                            <button type="button" onclick="togglePassword('confirm-password', 'cpwd-icon')" class="password-toggle">
+                                <i data-lucide="eye" id="cpwd-icon" style="width:20px; height:20px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" style="margin-top: 20px;">สมัครสมาชิก</button>
+            </form>
+
+            <!-- ลิงก์สลับกลับไปหน้าเข้าสู่ระบบ -->
+            <p class="switch-page-text">มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a></p>
+
+        </div>
+
+        <!-- ส่วนท้ายการ์ด SECURE DATA | MEMBER PERKS -->
+        <div class="features-badge-container">
+            <div class="feature-item">
+                <i data-lucide="shield-check" style="width:16px; height:16px;"></i>
+                <span>Secure Data</span>
+            </div>
+            <div class="feature-item">
+                <i data-lucide="gift" style="width:16px; height:16px;"></i>
+                <span>Member Perks</span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-logo">
+            <i data-lucide="coffee" style="width:16px; height:16px;"></i>
+            <span>Smart Coffee Menu</span>
+        </div>
+        <div>
+            © 2026 Smart Coffee Menu. All rights reserved.
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Support</a>
+        </div>
+    </footer>
+
+    <!-- 1. ดึงข้อมูล Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // 2. ตั้งค่า Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2PeHkqJkYWI7KZrWelffRCn8zaztlwWs",
+            authDomain: "smart-coffee-menu.firebaseapp.com",
+            projectId: "smart-coffee-menu",
+            storageBucket: "smart-coffee-menu.firebasestorage.app",
+            messagingSenderId: "127109058663",
+            appId: "1:127109058663:web:f20d50f394e4be95f104c2",
+            measurementId: "G-90M77XGVFJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // ฟังก์ชันสมัครสมาชิก
+        window.executeRegister = async function(event) {
+            event.preventDefault();
+            
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert('รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง');
+                return;
+            }
+
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                
+                // บันทึกชื่อสมาชิกไว้ในระบบเพื่อนำไปใช้แสดงในหน้า Recommendations
+                localStorage.setItem('user_fullname', fullname);
+                
+                alert('สมัครสมาชิกสำเร็จ!');
+                // เมื่อสมัครเสร็จ สามารถเลือกพาไปหน้า Recommendations หรือ Login ได้ครับ
+                window.location.href = "recommendations.html";
+            } catch (error) {
+                console.error(error);
+                if (error.code === 'auth/email-already-in-use') {
+                    alert('อีเมลนี้ถูกใช้งานไปแล้วในระบบ');
+                } else if (error.code === 'auth/weak-password') {
+                    alert('รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+                } else {
+                    alert('เกิดข้อผิดพลาด: ' + error.message);
+                }
+            }
+        }
+    </script>
+
+    <script>
+        lucide.createIcons();
+
+        function togglePassword(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                passwordInput.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

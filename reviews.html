@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews - Smart Coffee Menu</title>
+    
+    <!-- PWA & Mobile Optimization Setup -->
+    <meta name="theme-color" content="#2B1810">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Smart Coffee">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2935/2935307.png">
+
+    <!-- Fonts & CDNs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: #FAF5F2;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-[#1a1a1a]">
+
+    <!-- Header / Navbar -->
+    <header class="bg-[#2B1810] text-white px-6 md:px-16 py-4 flex flex-wrap justify-between items-center shadow-md sticky top-0 z-40 gap-3">
+        <div class="flex items-center space-x-2 font-bold text-lg tracking-wide">
+            <i data-lucide="coffee" class="w-6 h-6"></i>
+            <span>Smart Coffee Menu</span>
+        </div>
+        
+        <nav class="flex items-center space-x-4 md:space-x-8 text-xs md:text-sm font-medium text-gray-300">
+            <a href="Menu.html" class="hover:text-white transition">Menu</a>
+            <a href="reviews.html" class="text-white font-semibold underline underline-offset-8 decoration-2">Reviews</a>
+            <a href="about.html" class="hover:text-white transition">About</a>
+            <a href="orders.html" class="hover:text-white transition">Orders</a>
+        </nav>
+
+        <!-- Dynamic Auth Container (Firebase) -->
+        <div id="authContainer">
+            <a href="login.html" class="bg-white text-gray-900 hover:bg-gray-100 px-5 py-1.5 rounded-full font-medium transition text-xs">
+                Sign In
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto w-full px-6 py-10 flex-grow">
+        
+        <!-- Page Title Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-sm font-medium text-gray-700 tracking-wide mb-1">รีวิวจากลูกค้า</h1>
+            <p class="text-xs text-gray-500">แบ่งปันประสบการณ์และความคิดเห็นของคุณกับเรา</p>
+        </div>
+
+        <!-- Review Form Card -->
+        <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100/60 mb-14">
+            <h2 class="text-xs font-bold text-gray-900 mb-4">เขียนรีวิวของคุณ</h2>
+            
+            <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-4">
+                <!-- Rating Select -->
+                <div>
+                    <label class="block text-xs text-gray-600 mb-2">ให้คะแนนเครื่องดื่ม (1-5)</label>
+                    <div id="star-rating" class="flex space-x-2 text-gray-300">
+                        <button type="button" onclick="setRating(1)" class="star-btn transition transform hover:scale-110 focus:outline-none">
+                            <i data-lucide="star" class="w-6 h-6"></i>
+                        </button>
+                        <button type="button" onclick="setRating(2)" class="star-btn transition transform hover:scale-110 focus:outline-none">
+                            <i data-lucide="star" class="w-6 h-6"></i>
+                        </button>
+                        <button type="button" onclick="setRating(3)" class="star-btn transition transform hover:scale-110 focus:outline-none">
+                            <i data-lucide="star" class="w-6 h-6"></i>
+                        </button>
+                        <button type="button" onclick="setRating(4)" class="star-btn transition transform hover:scale-110 focus:outline-none">
+                            <i data-lucide="star" class="w-6 h-6"></i>
+                        </button>
+                        <button type="button" onclick="setRating(5)" class="star-btn transition transform hover:scale-110 focus:outline-none">
+                            <i data-lucide="star" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comment Area -->
+                <div>
+                    <label class="block text-xs text-gray-600 mb-2">ความคิดเห็นของคุณ</label>
+                    <textarea 
+                        id="review-comment"
+                        rows="4" 
+                        required
+                        placeholder="บอกเราว่าคุณประทับใจเมนูไหน หรือมีข้อเสนอแนะอย่างไรบ้าง..."
+                        class="w-full bg-[#FAF8F6] border border-gray-200 rounded-2xl p-4 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#2B1810] focus:bg-white transition resize-none"
+                    ></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2">
+                    <button 
+                        type="submit" 
+                        id="submit-btn"
+                        class="bg-[#2B1810] hover:bg-[#3e2318] text-white px-8 py-2.5 rounded-full text-xs font-medium transition active:scale-95 shadow-sm disabled:opacity-50 w-full md:w-auto"
+                    >
+                        ส่งรีวิว
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Recent Reviews Section -->
+        <div>
+            <h2 class="text-xs font-bold text-gray-800 mb-6">รีวิวล่าสุด</h2>
+
+            <!-- Review Cards Grid -->
+            <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                <div class="col-span-full text-center py-8 text-xs text-gray-400">
+                    กำลังโหลดรีวิว...
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#FCE3D7] text-gray-700 py-6 px-8 md:px-16 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs space-y-4 md:space-y-0">
+            <div class="font-bold text-gray-900">
+                Smart Coffee Menu
+            </div>
+
+            <div class="flex flex-wrap justify-center items-center gap-4 text-gray-600 font-medium">
+                <a href="#" class="hover:text-gray-900 transition">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-900 transition">Terms of Service</a>
+                <a href="#" class="hover:text-gray-900 transition">Contact Us</a>
+                <a href="#" class="hover:text-gray-900 transition">Instagram</a>
+            </div>
+
+            <div class="text-gray-500 text-center md:text-right">
+                © 2026 Smart Coffee Menu. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (v10+ Modular via CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ตั้งค่า Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2PeHkqJkYWI7KZrWelffRCn8zaztlwWs",
+            authDomain: "smart-coffee-menu.firebaseapp.com",
+            projectId: "smart-coffee-menu",
+            storageBucket: "smart-coffee-menu.firebasestorage.app",
+            messagingSenderId: "127109058663",
+            appId: "1:127109058663:web:f20d50f394e4be95f104c2",
+            measurementId: "G-90M77XGVFJ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let selectedRating = 0;
+
+        // 1. Auth State Observer
+        const authContainer = document.getElementById('authContainer');
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                const displayName = user.displayName || user.email.split('@')[0];
+                authContainer.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-gray-200"><strong class="text-white">${displayName}</strong></span>
+                        <button onclick="handleSignOut()" class="bg-red-500/80 hover:bg-red-600 text-white px-2.5 py-1 rounded-full text-[10px] font-medium transition">
+                            ออก
+                        </button>
+                    </div>
+                `;
+            } else {
+                authContainer.innerHTML = `
+                    <a href="login.html" class="bg-white text-gray-900 hover:bg-gray-100 px-5 py-1.5 rounded-full font-medium transition text-xs">
+                        Sign In
+                    </a>
+                `;
+            }
+        });
+
+        // Sign Out Handler
+        window.handleSignOut = async function() {
+            try {
+                await signOut(auth);
+                alert("ออกจากระบบเรียบร้อยแล้ว");
+                window.location.reload();
+            } catch (error) {
+                console.error("Logout Error:", error);
+            }
+        };
+
+        // 2. Star Rating UI Handler
+        window.setRating = function(rating) {
+            selectedRating = rating;
+            const starBtns = document.querySelectorAll('.star-btn');
+            
+            starBtns.forEach((btn, index) => {
+                const icon = btn.querySelector('svg') || btn.querySelector('i');
+                if (index < rating) {
+                    btn.classList.remove('text-gray-300');
+                    btn.classList.add('text-amber-400');
+                    if (icon) icon.setAttribute('fill', '#f59e0b');
+                } else {
+                    btn.classList.remove('text-amber-400');
+                    btn.classList.add('text-gray-300');
+                    if (icon) icon.setAttribute('fill', 'none');
+                }
+            });
+        };
+
+        // Helper Function สร้าง Star HTML
+        function renderStars(rating) {
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    starsHTML += `<i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>`;
+                } else {
+                    starsHTML += `<i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>`;
+                }
+            }
+            return starsHTML;
+        }
+
+        // Helper Function จัดการวันที่
+        function formatDate(timestamp) {
+            if (!timestamp || typeof timestamp.toDate !== 'function') {
+                return 'เมื่อสักครู่นี้';
+            }
+            const date = timestamp.toDate();
+            return date.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        // 3. Submit Review to Firebase Firestore
+        window.handleReviewSubmit = async function(e) {
+            e.preventDefault();
+
+            if (selectedRating === 0) {
+                alert('กรุณาเลือกให้คะแนนดาวก่อนส่งรีวิวครับ');
+                return;
+            }
+
+            const commentInput = document.getElementById('review-comment');
+            const submitBtn = document.getElementById('submit-btn');
+            const comment = commentInput.value.trim();
+
+            if (!comment) return;
+
+            const userName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : 'ผู้ใช้ทั่วไป (Guest)';
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'กำลังส่ง...';
+
+                await addDoc(collection(db, "reviews"), {
+                    userName: userName,
+                    rating: selectedRating,
+                    comment: comment,
+                    createdAt: serverTimestamp()
+                });
+
+                commentInput.value = '';
+                window.setRating(0);
+                alert('ขอบคุณสำหรับความคิดเห็นของคุณ!');
+            } catch (error) {
+                console.error("Error adding review: ", error);
+                alert('เกิดข้อผิดพลาดในการบันทึกรีวิว กรุณาลองใหม่อีกครั้ง');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'ส่งรีวิว';
+            }
+        };
+
+        // 4. Load Real-time Reviews from Firestore
+        const reviewsGrid = document.getElementById('reviews-grid');
+        const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"));
+
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.empty) {
+                reviewsGrid.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-xs text-gray-400">
+                        ยังไม่มีรีวิวในขณะนี้ ร่วมเป็นคนแรกที่รีวิวเครื่องดื่มของเรา!
+                    </div>
+                `;
+                return;
+            }
+
+            reviewsGrid.innerHTML = '';
+            
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const cardHTML = `
+                    <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100/60 flex flex-col justify-between h-full transition duration-300 hover:shadow-md">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-900">${data.userName || 'Guest'}</h3>
+                                    <p class="text-[10px] text-gray-400">${formatDate(data.createdAt)}</p>
+                                </div>
+                                <div class="flex space-x-0.5">
+                                    ${renderStars(data.rating)}
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                                ${data.comment}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                reviewsGrid.insertAdjacentHTML('beforeend', cardHTML);
+            });
+
+            lucide.createIcons();
+        }, (error) => {
+            console.error("Error loading reviews: ", error);
+            reviewsGrid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-red-400">ไม่สามารถโหลดรีวิวได้</div>`;
+        });
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

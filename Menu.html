@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เมนูเครื่องดื่ม - Smart Coffee Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: #fdf8f5;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-[#1a1a1a] relative overflow-x-hidden">
+
+    <header class="bg-[#3e271c] text-white px-6 md:px-16 py-4 flex flex-col md:flex-row justify-between items-center gap-4 shadow-md sticky top-0 z-40">
+        <div class="flex items-center space-x-2 font-semibold text-lg tracking-wide">
+            <i data-lucide="coffee" class="w-6 h-6"></i>
+            <span>Smart Coffee Menu</span>
+        </div>
+        
+        <!-- เมนูนำทาง (ตัด Recommendations ออกแล้ว) -->
+        <nav class="flex items-center space-x-6 text-sm font-medium text-gray-300">
+            <a href="Menu.html" class="text-white font-semibold underline underline-offset-4">Menu</a>
+            <a href="reviews.html" class="hover:text-white transition">Reviews</a>
+            <a href="about.html" class="hover:text-white transition">About</a>
+            <a href="#" class="hover:text-white transition">Orders</a>
+        </nav>
+
+        <div class="flex items-center space-x-4 w-full md:w-auto">
+            <div class="relative w-full md:w-64">
+                <input type="text" id="search-input" oninput="filterMenu()" placeholder="ค้นหาเมนู..." class="w-full bg-[#4a3327] border border-gray-600 rounded-full py-1.5 pl-4 pr-10 text-xs text-white focus:outline-none focus:ring-1 focus:ring-white">
+                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute right-3.5 top-2"></i>
+            </div>
+            <a href="index.html" class="bg-white text-gray-900 hover:bg-gray-100 px-5 py-1.5 rounded-full font-semibold transition text-xs whitespace-nowrap">
+                Sign In
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto w-full px-6 md:px-16 py-10 flex-grow">
+        
+        <div class="mb-8">
+            <h1 class="text-sm font-medium text-gray-500 mb-1">เมนูเครื่องดื่มและเบเกอรี่</h1>
+            <p class="text-xs text-gray-400 max-w-xl">สัมผัสสุนทรียภาพแห่งการดื่มกาแฟสูตรพรีเมียมและเบเกอรี่อบสดใหม่ คัดสรรจากวัตถุดิบชั้นดีเพื่อเติมความสุขในทุกๆ วัน</p>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mb-10">
+            <button onclick="filterCategory('ทั้งหมด')" class="category-btn bg-[#3e271c] text-white font-medium px-5 py-2 rounded-full text-xs shadow transition">ทั้งหมด</button>
+            <button onclick="filterCategory('กาแฟ')" class="category-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 font-medium px-5 py-2 rounded-full text-xs transition">กาแฟ (Coffee)</button>
+            <button onclick="filterCategory('ชา')" class="category-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 font-medium px-5 py-2 rounded-full text-xs transition">ชา (Tea)</button>
+            <button onclick="filterCategory('เครื่องดื่มปั่น')" class="category-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 font-medium px-5 py-2 rounded-full text-xs transition">เครื่องดื่มปั่น (Frappe)</button>
+            <button onclick="filterCategory('เบเกอรี่')" class="category-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 font-medium px-5 py-2 rounded-full text-xs transition">เบเกอรี่ (Bakery)</button>
+        </div>
+
+        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        </div>
+    </main>
+
+    <!-- ปุ่มเปิดตะกร้าสินค้าแบบลอย -->
+    <div class="fixed bottom-6 right-6 z-30">
+        <button onclick="toggleCart()" class="bg-[#3e271c] text-white p-3.5 rounded-full shadow-xl hover:bg-[#4a3327] transition relative flex items-center justify-center active:scale-95">
+            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white">0</span>
+        </button>
+    </div>
+
+    <!-- Sidebar ตะกร้าสินค้า -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+            <div class="p-6 bg-[#3e271c] text-white flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <h2 class="text-base font-bold">ตะกร้าสินค้าของคุณ</h2>
+                </div>
+                <button onclick="toggleCart()" class="text-gray-300 hover:text-white transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items-list" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div id="empty-cart-msg" class="text-center py-20 text-gray-400 space-y-2">
+                    <i data-lucide="shopping-cart" class="w-12 h-12 mx-auto stroke-1"></i>
+                    <p class="text-xs">ยังไม่มีสินค้าในตะกร้าของคุณ</p>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
+                <div id="payment-selection-block" class="hidden space-y-2">
+                    <h3 class="text-xs font-bold text-gray-700 flex items-center gap-1">
+                        <i data-lucide="credit-card" class="w-3.5 h-3.5"></i> เลือกวิธีการชำระเงิน
+                    </h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center space-x-2 bg-white p-3 rounded-xl border border-gray-200 cursor-pointer hover:border-[#3e271c] transition text-xs">
+                            <input type="radio" name="payment-method" value="PromptPay" checked class="w-4 h-4 text-[#3e271c] focus:ring-0">
+                            <span class="font-medium text-gray-800 flex items-center gap-1">
+                                <i data-lucide="qr-code" class="w-4 h-4 text-blue-600"></i> PromptPay
+                            </span>
+                        </label>
+                        <label class="flex items-center space-x-2 bg-white p-3 rounded-xl border border-gray-200 cursor-pointer hover:border-[#3e271c] transition text-xs">
+                            <input type="radio" name="payment-method" value="Counter" class="w-4 h-4 text-[#3e271c] focus:ring-0">
+                            <span class="font-medium text-gray-800 flex items-center gap-1">
+                                <i data-lucide="coins" class="w-4 h-4 text-amber-600"></i> จ่ายที่เคาน์เตอร์
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-between text-sm font-medium text-gray-900 pt-2 border-t border-gray-200/60">
+                    <span>ราคารวมทั้งหมด</span>
+                    <span id="cart-total-price" class="text-lg font-bold text-[#3e271c]">฿0</span>
+                </div>
+                <button onclick="submitOrder()" class="w-full bg-[#3e271c] hover:bg-[#4a3327] text-white font-medium py-3 rounded-xl text-xs transition shadow-md active:scale-[0.99]">
+                    ยืนยันการสั่งซื้ออาหาร
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ยืนยันการสั่งซื้อสำเร็จ -->
+    <div id="order-success-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl space-y-4 transform scale-95 transition-all duration-200 my-8">
+            <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto border border-green-200">
+                <i data-lucide="check-circle" class="w-10 h-10 text-green-500"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-gray-900">สั่งซื้ออาหารสำเร็จ!</h3>
+                <p class="text-xs text-gray-400 mt-1">บาร์ริสต้ากำลังเตรียมเมนูของคุณ กรุณารอสักครู่</p>
+            </div>
+
+            <div id="promptpay-qr-container" class="hidden bg-white p-4 rounded-2xl border border-gray-100 shadow-inner flex flex-col items-center justify-center space-y-2">
+                <p class="text-xs font-semibold text-gray-700">สแกน QR Code เพื่อชำระเงิน</p>
+                <img id="promptpay-qr-img" src="" alt="PromptPay QR Code" class="w-48 h-48 object-contain rounded-lg border p-1 bg-white">
+                <p class="text-[10px] text-gray-400">กรุณาตรวจสอบยอดเงินก่อนยืนยันชำระ</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-4 text-left text-xs space-y-2 text-gray-600 border border-gray-100">
+                <p class="flex justify-between"><span>วิธีชำระเงิน:</span> <span id="summary-payment-method" class="font-semibold text-gray-800">-</span></p>
+                <p class="flex justify-between border-t border-gray-200/60 pt-1.5"><span>ยอดรวมสุทธิ:</span> <span id="summary-total-price" class="font-bold text-[#3e271c]">-</span></p>
+            </div>
+
+            <button onclick="closeSuccessModal()" class="w-full bg-[#3e271c] hover:bg-[#4a3327] text-white text-xs font-medium py-2.5 rounded-xl transition">
+                ตกลง
+            </button>
+        </div>
+    </div>
+
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/40 z-40 hidden"></div>
+
+    <script>
+        const PROMPTPAY_ID = "0812345678";
+
+        const menuItems = [
+            {
+                id: 'c1',
+                name: 'เอสเพรสโซ่เย็น',
+                price: 75,
+                category: 'กาแฟ',
+                isPopular: true,
+                imgUrl: 'https://www.nestleprofessional.co.th/sites/default/files/styles/np_recipe_detail/public/2022-04/nescafe-iced-signature-540x400.jpg?itok=5gl_au1G',
+                desc: 'Iced Espresso กาแฟเอสเพรสโซ่รสชาติเข้มข้นสไตล์ไทย หวานมันกลมกล่อมกำลังดี'
+            },
+            {
+                id: 'c2',
+                name: 'คาปูชิโน่เย็น',
+                price: 80,
+                category: 'กาแฟ',
+                isPopular: false,
+                imgUrl: 'https://aroifin.com/wp-content/uploads/2025/09/170925-homemade-cappuccino-recipe-02.webp',
+                desc: 'Iced Cappuccino กาแฟนมรสชาตินุ่มละมุน ท็อปด้านบนด้วยฟองนมนุ่มหนาโรยผงซินนามอน'
+            },
+            {
+                id: 'c3',
+                name: 'อเมริกาโน่เย็น',
+                price: 65,
+                category: 'กาแฟ',
+                isPopular: true,
+                imgUrl: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?q=80&w=500&auto=format&fit=crop',
+                desc: 'Iced Americano กาแฟดำอาราบิก้าแท้ 100% รสชาติเข้มสะอาด ดื่มแล้วสดชื่นตลอดวัน'
+            },
+            {
+                id: 'f1',
+                name: 'ช็อกโกแลตปั่น',
+                price: 85,
+                category: 'เครื่องดื่มปั่น',
+                isPopular: true,
+                imgUrl: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=500&auto=format&fit=crop',
+                desc: 'Chocolate Frappe ช็อกโกแลตเบลเยียมเข้มข้นปั่นเนื้อเนียนละเอียด'
+            },
+            {
+                id: 'f2',
+                name: 'คาราเมลคอฟฟี่ปั่น',
+                price: 95,
+                category: 'เครื่องดื่มปั่น',
+                isPopular: true,
+                imgUrl: 'https://cdn.shopify.com/s/files/1/0778/0591/2351/files/ice_caramel_macchiato_09a92818-b343-42ba-9a2e-6729e18cf9c1_1024x1024.jpg?v=1738157652',
+                desc: 'Caramel Coffee Frappe เอสเพรสโซ่ช็อตปั่นคู่กับซอสคาราเมลโฮมเมดหอมละมุน'
+            },
+            {
+                id: 'f3',
+                name: 'มัทฉะกรีนทีปั่น',
+                price: 90,
+                category: 'เครื่องดื่มปั่น',
+                isPopular: false,
+                imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQqZV3p_GoOZstEkTml7_3J7vY8-qVfd6ie1im9YntZA&s',
+                desc: 'Matcha Green Tea Frappe มัทฉะอูจิแท้ 100% ปั่นหอมเข้มข้น'
+            },
+            {
+                id: 'f4',
+                name: 'สตรอว์เบอร์รี่โยเกิร์ตปั่น',
+                price: 85,
+                category: 'เครื่องดื่มปั่น',
+                isPopular: false,
+                imgUrl: 'https://api2.krua.co/wp-content/uploads/2020/07/RD0196_Gallery_-02-scaled.jpg',
+                desc: 'Strawberry Yogurt Frappe สตรอว์เบอร์รี่หวานซ่อนเปรี้ยวปั่นคู่กับโยเกิร์ตธรรมชาติ'
+            },
+            {
+                id: 'm1',
+                name: 'ชาไทยนม',
+                price: 70,
+                category: 'ชา',
+                isPopular: true,
+                imgUrl: 'https://cms.dmpcdn.com/food/2021/05/05/00a9fe30-ad7d-11eb-a73b-c395e0dfc07b_original.jpg',
+                desc: 'ชาไทยสูตรโบราณ กลิ่นหอมเป็นเอกลักษณ์ ผสมนมสดแท้รสชาติเข้มข้นกลมกล่อม'
+            },
+            {
+                id: 'm2',
+                name: 'ชานมใต้หวัน',
+                price: 70,
+                category: 'ชา',
+                isPopular: true,
+                imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2xqmPkBXcWDZYx0J8Ih-VGcptwt7qZCV4W2C-_e1Gmg&s=10',
+                desc: 'เบสชาดำหรือชาอู่หลง ผสมกับนมสดหรือครีมเทียม มีรสชาติกลมกล่อม หอมกลิ่นชาเป็นเอกลักษณ์ นิยมเสิร์ฟพร้อมไข่มุกหนึบหนับ'
+            },
+            {
+                id: 'm3',
+                name: 'ชาดำ',
+                price: 50,
+                category: 'ชา',
+                isPopular: true,
+                imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_M8kZ7fg1368T-y9Aia7z4oSqV3Lzw8onXCPrToK9zQ&s=10',
+                desc: 'รสชาติเข้มข้น และมีกลิ่นหอมเป็นเอกลักษณ์ แตกต่างจากชาเขียวที่ไม่ผ่านการหมักเลย '
+            },
+            {
+                id: 'b1',
+                name: 'ครัวซองต์เนยสด',
+                price: 65,
+                category: 'เบเกอรี่',
+                isPopular: true,
+                imgUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=500&auto=format&fit=crop',
+                desc: 'ครัวซองต์อบใหม่ร้อนๆ ผิวกรอบนอกนุ่มใน หอมกลิ่นเนยสดแท้ฝรั่งเศส'
+            },
+            {
+                id: 'b2',
+                name: 'บลูเบอร์รี่ชีสพาย',
+                price: 85,
+                category: 'เบเกอรี่',
+                isPopular: true,
+                imgUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=500&auto=format&fit=crop',
+                desc: 'Blueberry Cheese Pie ครีมชีสเนียนนุ่มราดซอสบลูเบอร์รี่เข้มข้นบนฐานพายกรุบกรอบ'
+            },
+            {
+                id: 'b3',
+                name: 'ช็อกโกแลตบราวนี่',
+                price: 70,
+                category: 'เบเกอรี่',
+                isPopular: false,
+                imgUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=500&auto=format&fit=crop',
+                desc: 'Chocolate Brownie บราวนี่เนื้อหนึบ (Fudgy) รสช็อกโกแลตแท้เข้มข้น หวานกำลังดี'
+            },
+            {
+                id: 'b4',
+                name: 'เค้กแครอทพรีเมียม',
+                price: 90,
+                category: 'เบเกอรี่',
+                isPopular: false,
+                imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsCyomolHaW-P0tbI5t3sGUh3fBVP3bL7ouks1jrWYvA&s=10',
+                desc: 'Carrot Cake เนื้อเค้กฉ่ำนุ่มผสมเนื้อแครอทและถั่ววอลนัท ปาดครีมชีสรสเปรี้ยวหวานลงตัว'
+            }
+        ];
+
+        let cart = [];
+        let currentCategory = "ทั้งหมด";
+
+        function displayMenu(items) {
+            const menuGrid = document.getElementById('menu-grid');
+            menuGrid.innerHTML = '';
+
+            if (items.length === 0) {
+                menuGrid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400"><p class="text-xs">ไม่พบรายการในหมวดหมู่นี้</p></div>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const popularTag = item.isPopular ? `<span class="absolute top-3 left-3 bg-[#3e271c] text-white text-[9px] font-medium px-2 py-0.5 rounded z-10">ยอดนิยม</span>` : '';
+
+                const itemHTML = `
+                    <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-lg flex flex-col justify-between relative p-3 space-y-3">
+                        <div class="relative rounded-2xl overflow-hidden h-40 bg-gray-100">
+                            ${popularTag}
+                            <img src="${item.imgUrl}" alt="${item.name}" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="px-1 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <h3 class="font-bold text-xs text-gray-900">${item.name}</h3>
+                                    <span class="font-bold text-xs text-gray-900">฿${item.price}</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 leading-relaxed line-clamp-2 mb-2">${item.desc}</p>
+                            </div>
+                        </div>
+
+                        <button onclick="addCardItemToCart('${item.id}')" class="w-full bg-[#3e271c] hover:bg-[#4a3327] text-white py-2 rounded-xl text-xs font-medium flex items-center justify-center space-x-1.5 transition shadow-sm active:scale-95">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                            <span>เพิ่มลงตะกร้า</span>
+                        </button>
+                    </div>
+                `;
+                menuGrid.insertAdjacentHTML('beforeend', itemHTML);
+            });
+            lucide.createIcons();
+        }
+
+        function addCardItemToCart(id) {
+            const item = menuItems.find(m => m.id === id);
+            if (!item) return;
+
+            const existingItem = cart.find(c => c.id === item.id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id: item.id, name: item.name, price: item.price, imgUrl: item.imgUrl, quantity: 1 });
+            }
+
+            updateCartUI();
+            toggleCart();
+        }
+
+        function filterMenu() {
+            const searchText = document.getElementById('search-input').value.toLowerCase();
+            const filtered = menuItems.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(searchText) || item.desc.toLowerCase().includes(searchText);
+                const matchesCategory = currentCategory === "ทั้งหมด" || item.category === currentCategory;
+                return matchesSearch && matchesCategory;
+            });
+            displayMenu(filtered);
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => {
+                if (btn.textContent.includes(category) || (category === "ทั้งหมด" && btn.textContent === "ทั้งหมด")) {
+                    btn.className = "category-btn bg-[#3e271c] text-white font-medium px-5 py-2 rounded-full text-xs shadow transition";
+                } else {
+                    btn.className = "category-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 font-medium px-5 py-2 rounded-full text-xs transition";
+                }
+            });
+            filterMenu();
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            sidebar.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function changeQuantity(id, amount) {
+            const item = cart.find(item => item.id === id);
+            if (!item) return;
+            item.quantity += amount;
+            if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById('cart-items-list');
+            const emptyMsg = document.getElementById('empty-cart-msg');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total-price');
+            const paymentSelectionBlock = document.getElementById('payment-selection-block');
+            
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartList.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartList.appendChild(emptyMsg);
+                cartTotal.textContent = '฿0';
+                paymentSelectionBlock.classList.add('hidden');
+                return;
+            }
+
+            paymentSelectionBlock.classList.remove('hidden');
+
+            let totalCost = 0;
+            cart.forEach(item => {
+                totalCost += item.price * item.quantity;
+                cartList.insertAdjacentHTML('beforeend', `
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                        <div class="flex items-center space-x-3 pr-2">
+                            <img src="${item.imgUrl}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0">
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-900 leading-tight">${item.name}</h4>
+                                <p class="text-[11px] text-gray-500 font-medium mt-0.5">฿${item.price}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 flex-shrink-0">
+                            <button onclick="changeQuantity('${item.id}', -1)" class="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center text-xs font-bold text-gray-600">-</button>
+                            <span class="text-xs font-semibold px-1 min-w-4 text-center">${item.quantity}</span>
+                            <button onclick="changeQuantity('${item.id}', 1)" class="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center text-xs font-bold text-gray-600">+</button>
+                        </div>
+                    </div>
+                `);
+            });
+            cartTotal.textContent = `฿${totalCost}`;
+        }
+
+        function submitOrder() {
+            if (cart.length === 0) {
+                alert("กรุณาเลือกเมนูใส่ตะกร้าก่อนทำการสั่งซื้อครับ");
+                return;
+            }
+
+            const selectedPayment = document.querySelector('input[name="payment-method"]:checked').value;
+            const paymentText = selectedPayment === 'PromptPay' ? 'โอนเงินผ่าน PromptPay (QR Code)' : 'ชำระที่เคาน์เตอร์ร้าน';
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            const qrContainer = document.getElementById('promptpay-qr-container');
+            const qrImg = document.getElementById('promptpay-qr-img');
+
+            if (selectedPayment === 'PromptPay') {
+                qrImg.src = `https://promptpay.io/${PROMPTPAY_ID}/${totalAmount}.png`;
+                qrContainer.classList.remove('hidden');
+            } else {
+                qrContainer.classList.add('hidden');
+            }
+
+            document.getElementById('summary-payment-method').textContent = paymentText;
+            document.getElementById('summary-total-price').textContent = `฿${totalAmount}`;
+
+            toggleCart();
+            const successModal = document.getElementById('order-success-modal');
+            successModal.classList.remove('hidden');
+            setTimeout(() => {
+                successModal.firstElementChild.classList.remove('scale-95');
+            }, 50);
+        }
+
+        function closeSuccessModal() {
+            const successModal = document.getElementById('order-success-modal');
+            successModal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                successModal.classList.add('hidden');
+                cart = [];
+                updateCartUI();
+            }, 150);
+        }
+
+        displayMenu(menuItems);
+    </script>
+</body>
+</html>

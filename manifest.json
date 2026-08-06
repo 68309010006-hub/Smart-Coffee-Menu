@@ -1,0 +1,15 @@
+{
+  "name": "Smart Coffee Menu",
+  "short_name": "CoffeeMenu",
+  "start_url": "/reviews.html",
+  "display": "standalone",
+  "background_color": "#2B1810",
+  "theme_color": "#2B1810",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2935/2935307.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Coffee Menu - Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: #f7f4f0;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-[#3e271c] text-white px-6 md:px-16 py-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center space-x-4 font-semibold text-sm tracking-wide">
+            <span class="text-white opacity-90">หน้าเข้าสู่ระบบ</span>
+            <span class="opacity-40 hidden sm:inline">|</span>
+            <span class="text-gray-300 font-normal">Smart Coffee Menu</span>
+        </div>
+        <nav class="flex items-center space-x-6 text-sm font-medium text-gray-300">
+            <a href="index.html" class="hover:text-white transition">หน้าแรก (About)</a>
+            <a href="Menu.html" class="hover:text-white transition">เมนูเครื่องดื่ม</a>
+            <a href="login.html" class="bg-[#4a3327] border border-gray-500 hover:bg-[#5a4033] text-white px-4 py-1.5 rounded-full text-xs transition">
+                เข้าสู่ระบบ (Admin)
+            </a>
+        </nav>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm max-w-md w-full text-center border border-gray-100">
+            
+            <div class="mx-auto w-16 h-16 bg-[#f3f0ec] rounded-full flex items-center justify-center mb-4">
+                <i data-lucide="coffee" class="w-8 h-8 text-[#3e271c]"></i>
+            </div>
+
+            <h1 class="text-2xl font-bold text-[#1a1a1a] mb-1">เข้าสู่ระบบ (Admin)</h1>
+            <p class="text-xs text-gray-500 mb-6">จัดการรายการเครื่องดื่มและคำแนะนำอัจฉริยะ</p>
+
+            <form class="text-left space-y-4" onsubmit="executeLogin(event)">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">อีเมลผู้ใช้งาน</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                        </span>
+                        <input type="email" id="email" placeholder="admin@coffee.com" required
+                            class="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3e271c] focus:border-[#3e271c] text-sm placeholder-gray-400">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-xs font-medium text-gray-700">รหัสผ่าน</label>
+                        <a href="#" onclick="forgotPassword()" class="text-xs text-[#3e271c] hover:underline font-medium">ลืมรหัสผ่าน?</a>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </span>
+                        <input type="password" id="password" placeholder="••••••••" required
+                            class="w-full pl-11 pr-11 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3e271c] focus:border-[#3e271c] text-sm placeholder-gray-400">
+                        <button type="button" onclick="togglePassword('password', 'password-toggle-icon')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                            <i data-lucide="eye" id="password-toggle-icon" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" 
+                    class="w-full bg-[#3e271c] hover:bg-[#4a3327] text-white font-medium py-2.5 rounded-full shadow-md transition duration-200 text-sm active:scale-95">
+                    เข้าสู่ระบบด้วยบัญชีร้าน
+                </button>
+            </form>
+
+            <div class="relative flex py-5 items-center">
+                <div class="flex-grow border-t border-gray-200"></div>
+                <span class="flex-shrink mx-4 text-gray-400 text-xs">หรือ</span>
+                <div class="flex-grow border-t border-gray-200"></div>
+            </div>
+
+            <!-- ปุ่ม Google Login แบบเรียกใช้ Firebase Popup -->
+            <div class="flex justify-center">
+                <button type="button" onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2.5 px-4 rounded-xl shadow-sm transition duration-150 text-sm active:scale-95">
+                    <svg width="18" height="18" viewBox="0 0 18 18"><path d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84c-.21 1.12-.84 2.07-1.79 2.7v2.25h2.9c1.69-1.55 2.69-3.83 2.69-6.58z" fill="#4285F4"/><path d="M9 18c2.43 0 4.47-.8 5.96-2.22l-2.9-2.25c-.8.54-1.84.87-3.06.87-2.35 0-4.33-1.58-5.04-3.71H.92v2.32C2.4 15.99 5.46 18 9 18z" fill="#34A853"/><path d="M3.96 10.69c-.18-.54-.28-1.12-.28-1.69s.1-1.15.28-1.69V5.01H.92A8.98 8.98 0 0 0 0 9c0 1.45.35 2.84.92 4.09l3.04-2.4z" fill="#FBBC05"/><path d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.4C13.46.98 11.42 0 9 0 5.46 0 2.4 2.01.92 4.99l3.04 2.32c.71-2.13 2.69-3.71 5.04-3.71z" fill="#EA4335"/></svg>
+                    <span>เข้าสู่ระบบด้วย Google</span>
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-4">ยังไม่มีบัญชีผู้ใช้? <a href="register.html" class="text-[#3e271c] font-bold hover:underline">สมัครสมาชิก</a></p>
+
+            <div class="mt-6">
+                <a href="Menu.html" class="inline-flex items-center space-x-1.5 text-xs text-gray-400 hover:text-gray-700 transition font-medium">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                    <span>กลับไปหน้าหลักของระบบ</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#fceee6] text-gray-600 text-xs px-6 md:px-16 py-5 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-gray-200">
+        <div class="flex items-center space-x-2 font-semibold text-gray-800">
+            <i data-lucide="coffee" class="w-4 h-4"></i>
+            <span>Smart Coffee Menu</span>
+        </div>
+        <div>
+            © 2026 Smart Coffee Menu. All rights reserved.
+        </div>
+        <div class="flex space-x-6">
+            <a href="#" class="hover:underline">Privacy Policy</a>
+            <a href="#" class="hover:underline">Terms of Service</a>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (v10+ Modular via CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            signInWithPopup, 
+            GoogleAuthProvider,
+            sendPasswordResetEmail 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2PeHkqJkYWI7KZrWelffRCn8zaztlwWs",
+            authDomain: "smart-coffee-menu.firebaseapp.com",
+            projectId: "smart-coffee-menu",
+            storageBucket: "smart-coffee-menu.firebasestorage.app",
+            messagingSenderId: "127109058663",
+            appId: "1:127109058663:web:f20d50f394e4be95f104c2",
+            measurementId: "G-90M77XGVFJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // ผูกฟังก์ชันเข้ากับ window เพื่อให้ HTML event handlers เรียกใช้ได้
+        window.executeLogin = async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                alert('ยินดีต้อนรับเข้าสู่ระบบสำเร็จ!');
+                window.location.href = "Menu.html";
+            } catch (error) {
+                console.error(error);
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
+                } else {
+                    alert('เกิดข้อผิดพลาด: ' + error.message);
+                }
+            }
+        };
+
+        window.loginWithGoogle = async function() {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                alert(`ยินดีต้อนรับคุณ ${user.displayName || 'ผู้ใช้งาน'} เข้าสู่ระบบสำเร็จครับ!`);
+                window.location.href = "Menu.html";
+            } catch (error) {
+                console.error(error);
+                alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google: " + error.message);
+            }
+        };
+
+        window.forgotPassword = async function() {
+            const email = prompt("กรุณากรอกอีเมลที่ใช้สมัครสมาชิกเพื่อรีเซ็ตรหัสผ่าน:");
+            if (!email) return;
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("ระบบได้ส่งลิงก์สำหรับรีเซ็ตรหัสผ่านไปยังอีเมลของคุณแล้ว โปรดตรวจสอบกล่องจดหมาย");
+            } catch (error) {
+                console.error(error);
+                alert("ไม่สามารถส่งอีเมลรีเซ็ตรหัสผ่านได้: " + error.message);
+            }
+        };
+    </script>
+
+    <script>
+        lucide.createIcons();
+
+        function togglePassword(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                passwordInput.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

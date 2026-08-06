@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกี่ยวกับระบบ - Smart Coffee Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: #fdf8f5; /* สีครีมสว่างมินิมอลตามแบบ */
+        }
+        /* ทำส่วนโค้งด้านล่างรูป Hero */
+        .hero-curve {
+            border-bottom-left-radius: 50% 8%;
+            border-bottom-right-radius: 50% 8%;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-[#1a1a1a]">
+
+    <header class="absolute top-0 left-0 right-0 z-10 bg-black/20 backdrop-blur-sm text-white px-6 md:px-16 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2 font-semibold text-lg tracking-wide">
+            <i data-lucide="coffee" class="w-6 h-6"></i>
+            <span>Smart Coffee Menu</span>
+        </div>
+        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-200">
+            <a href="Menu.html" class="hover:text-white transition">Menu</a>
+            <a href="about.html" class="text-white font-semibold underline underline-offset-4">About</a>
+            
+            <!-- ส่วนแสดงปุ่ม Login / ข้อมูลผู้ใช้ (จะเปลี่ยนอัตโนมัติด้วย Firebase Auth State) -->
+            <div id="authContainer">
+                <a href="login.html" class="bg-white text-gray-900 hover:bg-gray-100 px-5 py-1.5 rounded-full font-semibold transition text-xs">
+                    Sign In
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="relative h-[480px] bg-cover bg-center flex items-center hero-curve overflow-hidden shadow-md" 
+             style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=1600&auto=format&fit=crop');">
+        
+        <div class="max-w-7xl mx-auto w-full px-6 md:px-16 mt-12">
+            <span class="bg-[#f08a5d] text-white text-[10px] uppercase font-bold px-3 py-1 rounded-full tracking-wider">เกี่ยวกับเรา</span>
+            <h1 class="text-white text-3xl md:text-5xl font-bold mt-4 mb-2">เกี่ยวกับระบบ</h1>
+            <p class="text-white/90 text-4xl md:text-6xl font-bold tracking-tight mb-4">Smart Coffee Menu</p>
+            <p class="text-white/80 text-sm md:text-base max-w-xl font-light">
+                ระบบจัดการเมนูและวิเคราะห์พฤติกรรมการสั่งซื้อแบบอัจฉริยะ ออกแบบมาเพื่อเติมเต็มความต้องการของลูกค้าให้ตรงใจคุณมากที่สุด
+            </p>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto w-full px-6 md:px-16 py-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-2 bg-[#fbeee6] rounded-3xl p-8 md:p-10 flex flex-col justify-between border border-orange-100">
+            <div>
+                <div class="text-[#3e271c] mb-4">
+                    <i data-lucide="store" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-xl font-bold text-[#3e271c] mb-4">Overview</h2>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Smart Coffee Menu คือระบบแนะนำรายการเครื่องดื่มผ่านหน้าจอแสดงผลที่จะช่วยให้ผู้ซื้อจัดการเครื่องดื่มที่แนะนำได้อย่างลงตัวและมีประสิทธิภาพ 
+                    ไม่ว่าจะเป็นเมนูซิกเนเจอร์ เมนูไฮไลท์ และอาหารประเภทอื่นๆ ทั้งในกลุ่ม Coffee และ Non-coffee ให้คุณเลือกจัดการเมนูที่ใช่ได้ในทุกๆ วัน
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-[#3e271c] text-white rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden shadow-lg">
+            <div>
+                <h2 class="text-xl font-bold mb-4">Mission</h2>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                    พันธกิจของเราคือการพัฒนาระบบ และการบริการ เพื่อให้สามารถตอบสนองทุกความต้องการของร้านค้าและผู้บริโภคได้อย่างลงตัว คุ้มค่า มีคุณภาพ และยั่งยืนในระยะยาว
+                </p>
+            </div>
+            <div class="absolute bottom-4 right-4 opacity-10">
+                <i data-lucide="rocket" class="w-20 h-20"></i>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto w-full px-6 md:px-16 py-12 text-center">
+        <h2 class="text-xl font-bold text-gray-900 mb-2">ฟีเจอร์เด่นของระบบ</h2>
+        <p class="text-xs text-gray-500 mb-10">สร้างสรรค์เพื่อความสะดวกสบายของผู้บริหารและผู้ดูแล</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-left">
+                <div class="w-10 h-10 bg-[#fceee6] text-[#f08a5d] rounded-xl flex items-center justify-center mb-4">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-sm text-gray-900 mb-2">Smart Recommendations</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">ระบบวิเคราะห์และแนะนำเมนูอาหารและเครื่องดื่มที่ชาญฉลาดตามความต้องการและพฤติกรรมบุคคลแบบ Real-time</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-left">
+                <div class="w-10 h-10 bg-[#fceee6] text-[#f08a5d] rounded-xl flex items-center justify-center mb-4">
+                    <i data-lucide="smartphone" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-sm text-gray-900 mb-2">User-friendly Interface</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">หน้าจอกระชับ ใช้งานง่าย สวยงาม ทันสมัย เพื่อช่วยให้ลูกค้าและพนักงานสั่งเมนูและซื้อสินค้าได้อย่างสะดวกรวดเร็ว</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-left">
+                <div class="w-10 h-10 bg-[#fceee6] text-[#f08a5d] rounded-xl flex items-center justify-center mb-4">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-sm text-gray-900 mb-2">Menu Management</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">ระบบจัดการข้อมูลและเมนูอัปเดตแบบเรียลไทม์ รองรับโปรโมชันที่เปลี่ยนแปรตามสถานการณ์ได้ตามใจชอบ</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto w-full px-6 md:px-16 py-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800&auto=format&fit=crop" 
+                 alt="Cafe Display" 
+                 class="rounded-3xl shadow-md w-full object-cover h-[350px]">
+        </div>
+        <div class="space-y-6">
+            <h2 class="text-2xl font-bold text-gray-900 leading-tight">ความพิถีพิถันในทุกขั้นตอน<br>ตั้งแต่การเลือกเมล็ด จนถึงหน้าจอ</h2>
+            <p class="text-gray-500 text-xs leading-relaxed">
+                การสร้างสรรค์ที่ใส่ใจความเหมาะสมของสไตล์และภาพลักษณ์ เพื่อเชื่อมโยงความเป็นแบรนด์เข้าสู่หน้าจอ พร้อมส่งมอบความพึงพอใจสูงสุดให้กับผู้บริโภค
+            </p>
+            <ul class="space-y-3 text-xs text-gray-700">
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#f08a5d]"></i>
+                    <span>คัดสรรเมนูยอดนิยมจากผู้เชี่ยวชาญ</span>
+                </li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#f08a5d]"></i>
+                    <span>รองรับการปรับแต่งภาพลักษณ์ตามแบรนด์ตัวคุณ</span>
+                </li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#f08a5d]"></i>
+                    <span>ระบบประมวลผลรวดเร็ว เสถียร แม่นยำ</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto w-full px-6 md:px-16 py-6 mb-12">
+        <div class="bg-[#3e271c] text-white rounded-3xl p-8 md:p-12 text-center space-y-6 shadow-xl">
+            <h2 class="text-xl md:text-2xl font-bold">พร้อมสัมผัสประสบการณ์ใหม่หรือยัง?</h2>
+            <p class="text-gray-300 text-xs max-w-md mx-auto font-light">
+                เริ่มต้นใช้งานกับเราวันนี้ เพื่อยกระดับความสามารถในการจัดการกิจการค้าของคุณไปอีกขั้น
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 pt-2">
+                <a href="login.html" class="bg-white text-[#3e271c] hover:bg-gray-100 px-6 py-2 rounded-full text-xs font-semibold shadow transition">
+                    เข้าสู่ระบบตอนนี้
+                </a>
+                <a href="Menu.html" class="border border-white/40 hover:border-white text-white px-6 py-2 rounded-full text-xs font-semibold transition">
+                    ดูเมนูทั้งหมด
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#fceee6] text-gray-600 text-[11px] px-6 md:px-16 py-5 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-gray-200 mt-auto">
+        <div class="flex items-center space-x-2 font-semibold text-gray-800">
+            <i data-lucide="coffee" class="w-4 h-4"></i>
+            <span>Smart Coffee Menu</span>
+        </div>
+        <div>
+            © 2026 Smart Coffee Menu. All rights reserved.
+        </div>
+        <div class="flex space-x-6">
+            <a href="#" class="hover:underline">Privacy Policy</a>
+            <a href="#" class="hover:underline">Terms of Service</a>
+            <a href="#" class="hover:underline">Contact Us</a>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (v10+ Modular via CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // ตั้งค่า Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2PeHkqJkYWI7KZrWelffRCn8zaztlwWs",
+            authDomain: "smart-coffee-menu.firebaseapp.com",
+            projectId: "smart-coffee-menu",
+            storageBucket: "smart-coffee-menu.firebasestorage.app",
+            messagingSenderId: "127109058663",
+            appId: "1:127109058663:web:f20d50f394e4be95f104c2",
+            measurementId: "G-90M77XGVFJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const authContainer = document.getElementById('authContainer');
+
+        // ตรวจจับสถานะการเข้าสู่ระบบแบบ Real-time
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const displayName = user.displayName || user.email.split('@')[0];
+                authContainer.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs text-gray-200">สวัสดี, <strong class="text-white">${displayName}</strong></span>
+                        <button onclick="handleSignOut()" class="bg-red-500/80 hover:bg-red-600 text-white px-3 py-1 rounded-full text-xs font-medium transition">
+                            ออกจากระบบ
+                        </button>
+                    </div>
+                `;
+            } else {
+                authContainer.innerHTML = `
+                    <a href="login.html" class="bg-white text-gray-900 hover:bg-gray-100 px-5 py-1.5 rounded-full font-semibold transition text-xs">
+                        Sign In
+                    </a>
+                `;
+            }
+        });
+
+        // ฟังก์ชันออกจากระบบ
+        window.handleSignOut = async function() {
+            try {
+                await signOut(auth);
+                alert("ออกจากระบบเรียบร้อยแล้ว");
+                window.location.reload();
+            } catch (error) {
+                console.error("Logout Error:", error);
+                alert("เกิดข้อผิดพลาดในการออกจากระบบ");
+            }
+        };
+    </script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
