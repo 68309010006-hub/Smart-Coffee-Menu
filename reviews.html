@@ -6,7 +6,7 @@
     <title>Reviews - Smart Coffee Menu</title>
     
     <!-- PWA & Mobile Optimization Setup -->
-    <meta name="theme-color" content="#2B1810">
+    <meta name="theme-color" content="#3D2B1F">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,95 +18,135 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         body {
-            font-family: 'Noto Sans Thai', sans-serif;
-            background-color: #FAF5F2;
+            font-family: 'Prompt', 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF6F0;
+            color: #4A3E3D;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .star-btn svg {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease, fill 0.2s ease;
+        }
+        .star-btn:hover svg {
+            transform: scale(1.25) rotate(6deg);
+        }
+        .smooth-shadow {
+            box-shadow: 0 10px 30px -10px rgba(120, 80, 50, 0.08);
+        }
+        .smooth-shadow-lg {
+            box-shadow: 0 20px 40px -15px rgba(120, 80, 50, 0.12);
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen text-[#1a1a1a]">
+<body class="flex flex-col min-h-screen selection:bg-[#E8D8CE] selection:text-[#3D2B1F]">
 
     <!-- Header / Navbar -->
-    <header class="bg-[#2B1810] text-white px-6 md:px-16 py-4 flex flex-wrap justify-between items-center shadow-md sticky top-0 z-40 gap-3">
-        <div class="flex items-center space-x-2 font-bold text-lg tracking-wide">
-            <i data-lucide="coffee" class="w-6 h-6"></i>
-            <span>Smart Coffee Menu</span>
+    <header class="bg-[#3D2B1F]/95 backdrop-blur-md text-[#F7F3EE] px-4 sm:px-8 md:px-12 py-3.5 flex flex-wrap justify-between items-center shadow-sm sticky top-0 z-40 gap-3">
+        <div class="flex items-center space-x-2.5 font-medium text-base tracking-wide">
+            <div class="w-8 h-8 rounded-full bg-[#523A2A] flex items-center justify-center text-amber-200/90 shadow-inner">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
+            </div>
+            <span class="font-semibold text-white tracking-wide">Smart Coffee</span>
         </div>
         
-        <nav class="flex items-center space-x-4 md:space-x-8 text-xs md:text-sm font-medium text-gray-300">
-            <a href="Menu.html" class="hover:text-white transition">Menu</a>
-            <a href="reviews.html" class="text-white font-semibold underline underline-offset-8 decoration-2">Reviews</a>
-            <a href="about.html" class="hover:text-white transition">About</a>
-            <a href="orders.html" class="hover:text-white transition">Orders</a>
+        <!-- Navigation Bar สไตล์มินิมอลตามรูปภาพ -->
+        <nav class="flex items-center space-x-6 text-sm sm:text-base font-normal text-[#E0C9A6]">
+            <a href="Menu.html" class="py-1 hover:text-white transition-colors duration-200">Menu</a>
+            
+            <!-- หน้าปัจจุบัน (Reviews) เพิ่มตัวหนา สีขาว และเส้นใต้สีเหลืองทอง -->
+            <a href="reviews.html" class="py-1 text-white font-bold border-b-2 border-[#EAB308] transition-all">Reviews</a>
+            
+            <a href="about.html" class="py-1 hover:text-white transition-colors duration-200">About</a>
+            <a href="orders.html" class="py-1 hover:text-white transition-colors duration-200">Orders</a>
+            
+            <!-- ปุ่ม Admin Navigation -->
+            <a href="admin.html" class="ml-2 text-amber-200/90 hover:text-amber-100 hover:bg-amber-900/40 transition-all duration-200 flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/20 text-xs">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin
+            </a>
         </nav>
 
         <!-- Dynamic Auth Container (Firebase) -->
         <div id="authContainer">
-            <a href="login.html" class="bg-white text-gray-900 hover:bg-gray-100 px-5 py-1.5 rounded-full font-medium transition text-xs">
+            <a href="login.html" class="bg-[#F7F3EE] text-[#3D2B1F] hover:bg-white px-4 py-1.5 rounded-full font-medium transition-all shadow-xs hover:shadow text-xs">
                 Sign In
             </a>
         </div>
     </header>
 
     <!-- Main Content Container -->
-    <main class="max-w-5xl mx-auto w-full px-6 py-10 flex-grow">
+    <main class="max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-14 flex-grow">
         
         <!-- Page Title Section -->
-        <div class="text-center mb-8">
-            <h1 class="text-sm font-medium text-gray-700 tracking-wide mb-1">รีวิวจากลูกค้า</h1>
-            <p class="text-xs text-gray-500">แบ่งปันประสบการณ์และความคิดเห็นของคุณกับเรา</p>
+        <div class="text-center mb-10 space-y-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EDE3DA] text-[#8C6D58] text-[11px] font-medium tracking-wide">
+                <i data-lucide="heart" class="w-3 h-3 fill-current text-[#A37B64]"></i> Voice of Our Guests
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-semibold text-[#3D2B1F] tracking-tight">รีวิวจากลูกค้า</h1>
+            <p class="text-xs sm:text-sm text-[#8C7A6B] max-w-md mx-auto font-light leading-relaxed">
+                แบ่งปันความประทับใจและประสบการณ์กาแฟแก้วโปรดของคุณกับเรา
+            </p>
         </div>
 
         <!-- Review Form Card -->
-        <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100/60 mb-14">
-            <h2 class="text-xs font-bold text-gray-900 mb-4">เขียนรีวิวของคุณ</h2>
+        <div class="max-w-lg mx-auto glass-card rounded-3xl p-6 sm:p-8 smooth-shadow border border-[#F0E6DD] mb-12 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-28 h-28 bg-[#F4E8DF] rounded-full blur-2xl pointer-events-none"></div>
             
-            <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-4">
+            <h2 class="text-sm font-semibold text-[#3D2B1F] mb-5 flex items-center gap-2">
+                <i data-lucide="pen-tool" class="w-4 h-4 text-[#A37B64]"></i>
+                เขียนรีวิวของคุณ
+            </h2>
+            
+            <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-5 relative">
                 <!-- Rating Select -->
-                <div>
-                    <label class="block text-xs text-gray-600 mb-2">ให้คะแนนเครื่องดื่ม (1-5)</label>
-                    <div id="star-rating" class="flex space-x-2 text-gray-300">
-                        <button type="button" onclick="setRating(1)" class="star-btn transition transform hover:scale-110 focus:outline-none">
-                            <i data-lucide="star" class="w-6 h-6"></i>
+                <div class="bg-[#FAF6F0]/80 p-4 rounded-2xl border border-[#EDE3DA] text-center">
+                    <label class="block text-xs font-medium text-[#7A685A] mb-2.5">ความพึงพอใจต่อรสชาติ (1-5 ดาว)</label>
+                    <div id="star-rating" class="flex justify-center space-x-2 text-[#D9C8BC]">
+                        <button type="button" onclick="setRating(1)" class="star-btn p-1 focus:outline-none">
+                            <i data-lucide="star" class="w-7 h-7"></i>
                         </button>
-                        <button type="button" onclick="setRating(2)" class="star-btn transition transform hover:scale-110 focus:outline-none">
-                            <i data-lucide="star" class="w-6 h-6"></i>
+                        <button type="button" onclick="setRating(2)" class="star-btn p-1 focus:outline-none">
+                            <i data-lucide="star" class="w-7 h-7"></i>
                         </button>
-                        <button type="button" onclick="setRating(3)" class="star-btn transition transform hover:scale-110 focus:outline-none">
-                            <i data-lucide="star" class="w-6 h-6"></i>
+                        <button type="button" onclick="setRating(3)" class="star-btn p-1 focus:outline-none">
+                            <i data-lucide="star" class="w-7 h-7"></i>
                         </button>
-                        <button type="button" onclick="setRating(4)" class="star-btn transition transform hover:scale-110 focus:outline-none">
-                            <i data-lucide="star" class="w-6 h-6"></i>
+                        <button type="button" onclick="setRating(4)" class="star-btn p-1 focus:outline-none">
+                            <i data-lucide="star" class="w-7 h-7"></i>
                         </button>
-                        <button type="button" onclick="setRating(5)" class="star-btn transition transform hover:scale-110 focus:outline-none">
-                            <i data-lucide="star" class="w-6 h-6"></i>
+                        <button type="button" onclick="setRating(5)" class="star-btn p-1 focus:outline-none">
+                            <i data-lucide="star" class="w-7 h-7"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Comment Area -->
                 <div>
-                    <label class="block text-xs text-gray-600 mb-2">ความคิดเห็นของคุณ</label>
+                    <label class="block text-xs font-medium text-[#7A685A] mb-2">ความคิดเห็นของคุณ</label>
                     <textarea 
                         id="review-comment"
-                        rows="4" 
+                        rows="3" 
                         required
-                        placeholder="บอกเราว่าคุณประทับใจเมนูไหน หรือมีข้อเสนอแนะอย่างไรบ้าง..."
-                        class="w-full bg-[#FAF8F6] border border-gray-200 rounded-2xl p-4 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#2B1810] focus:bg-white transition resize-none"
+                        placeholder="บอกเล่าเรื่องราวความอร่อย รสชาติกาแฟ หรือข้อเสนอแนะต้อนรับวันใหม่ของคุณ..."
+                        class="w-full bg-[#FAF6F0] border border-[#E8DCD1] rounded-2xl p-4 text-xs text-[#3D2B1F] placeholder-[#B5A496] focus:outline-none focus:ring-2 focus:ring-[#A37B64]/30 focus:border-[#A37B64] focus:bg-white transition-all duration-200 resize-none leading-relaxed"
                     ></textarea>
                 </div>
 
                 <!-- Submit Button -->
-                <div class="pt-2">
+                <div class="pt-1">
                     <button 
                         type="submit" 
                         id="submit-btn"
-                        class="bg-[#2B1810] hover:bg-[#3e2318] text-white px-8 py-2.5 rounded-full text-xs font-medium transition active:scale-95 shadow-sm disabled:opacity-50 w-full md:w-auto"
+                        class="w-full bg-[#3D2B1F] hover:bg-[#523A2A] text-[#F7F3EE] px-8 py-3 rounded-2xl text-xs font-medium transition-all duration-200 active:scale-[0.98] smooth-shadow disabled:opacity-50 flex items-center justify-center gap-2"
                     >
+                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
                         ส่งรีวิว
                     </button>
                 </div>
@@ -114,13 +154,19 @@
         </div>
 
         <!-- Recent Reviews Section -->
-        <div>
-            <h2 class="text-xs font-bold text-gray-800 mb-6">รีวิวล่าสุด</h2>
+        <div class="max-w-3xl mx-auto space-y-5">
+            <div class="flex items-center justify-between border-b border-[#EADCD0] pb-3">
+                <h2 class="text-sm font-semibold text-[#3D2B1F] flex items-center gap-2">
+                    <i data-lucide="message-square" class="w-4 h-4 text-[#A37B64]"></i> 
+                    รีวิวล่าสุดจากลูกค้า
+                </h2>
+                <span class="text-[11px] text-[#A39284] font-light">อัปเดตแบบเรียลไทม์</span>
+            </div>
 
             <!-- Review Cards Grid -->
-            <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-                <div class="col-span-full text-center py-8 text-xs text-gray-400">
-                    กำลังโหลดรีวิว...
+            <div id="reviews-grid" class="flex flex-col">
+                <div class="col-span-full text-center py-12 text-xs text-[#A39284]">
+                    กำลังโหลดความประทับใจ...
                 </div>
             </div>
         </div>
@@ -128,20 +174,21 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#FCE3D7] text-gray-700 py-6 px-8 md:px-16 mt-auto">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs space-y-4 md:space-y-0">
-            <div class="font-bold text-gray-900">
-                Smart Coffee Menu
+    <footer class="bg-[#EFE6DD] text-[#6E5D50] py-8 px-4 sm:px-8 md:px-16 mt-auto border-t border-[#E5D8CC]">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs space-y-4 md:space-y-0">
+            <div class="flex items-center gap-2 font-medium text-[#3D2B1F]">
+                <i data-lucide="coffee" class="w-4 h-4 text-[#8C6D58]"></i>
+                <span>Smart Coffee Menu</span>
             </div>
 
-            <div class="flex flex-wrap justify-center items-center gap-4 text-gray-600 font-medium">
-                <a href="#" class="hover:text-gray-900 transition">Privacy Policy</a>
-                <a href="#" class="hover:text-gray-900 transition">Terms of Service</a>
-                <a href="#" class="hover:text-gray-900 transition">Contact Us</a>
-                <a href="#" class="hover:text-gray-900 transition">Instagram</a>
+            <div class="flex flex-wrap justify-center items-center gap-5 text-[#7A685A] font-light">
+                <a href="#" class="hover:text-[#3D2B1F] transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-[#3D2B1F] transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-[#3D2B1F] transition-colors">Contact Us</a>
+                <a href="#" class="hover:text-[#3D2B1F] transition-colors">Instagram</a>
             </div>
 
-            <div class="text-gray-500 text-center md:text-right">
+            <div class="text-[#A39284] text-center md:text-right font-light text-[11px]">
                 © 2026 Smart Coffee Menu. All rights reserved.
             </div>
         </div>
@@ -179,16 +226,16 @@
             if (user) {
                 const displayName = user.displayName || user.email.split('@')[0];
                 authContainer.innerHTML = `
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs text-gray-200"><strong class="text-white">${displayName}</strong></span>
-                        <button onclick="handleSignOut()" class="bg-red-500/80 hover:bg-red-600 text-white px-2.5 py-1 rounded-full text-[10px] font-medium transition">
+                    <div class="flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full border border-white/10">
+                        <span class="text-xs text-[#E5D8CC]">สวัสดี, <strong class="text-white font-medium">${displayName}</strong></span>
+                        <button onclick="handleSignOut()" class="bg-rose-500/80 hover:bg-rose-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all ml-1">
                             ออก
                         </button>
                     </div>
                 `;
             } else {
                 authContainer.innerHTML = `
-                    <a href="login.html" class="bg-white text-gray-900 hover:bg-gray-100 px-5 py-1.5 rounded-full font-medium transition text-xs">
+                    <a href="login.html" class="bg-[#F7F3EE] text-[#3D2B1F] hover:bg-white px-4 py-1.5 rounded-full font-medium transition-all shadow-xs text-xs">
                         Sign In
                     </a>
                 `;
@@ -212,15 +259,15 @@
             const starBtns = document.querySelectorAll('.star-btn');
             
             starBtns.forEach((btn, index) => {
-                const icon = btn.querySelector('svg') || btn.querySelector('i');
+                const svg = btn.querySelector('svg');
                 if (index < rating) {
-                    btn.classList.remove('text-gray-300');
+                    btn.classList.remove('text-[#D9C8BC]');
                     btn.classList.add('text-amber-400');
-                    if (icon) icon.setAttribute('fill', '#f59e0b');
+                    if (svg) svg.setAttribute('fill', '#f59e0b');
                 } else {
                     btn.classList.remove('text-amber-400');
-                    btn.classList.add('text-gray-300');
-                    if (icon) icon.setAttribute('fill', 'none');
+                    btn.classList.add('text-[#D9C8BC]');
+                    if (svg) svg.setAttribute('fill', 'none');
                 }
             });
         };
@@ -232,7 +279,7 @@
                 if (i <= rating) {
                     starsHTML += `<i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>`;
                 } else {
-                    starsHTML += `<i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>`;
+                    starsHTML += `<i data-lucide="star" class="w-3.5 h-3.5 text-[#E3D5CA]"></i>`;
                 }
             }
             return starsHTML;
@@ -266,7 +313,8 @@
 
             try {
                 submitBtn.disabled = true;
-                submitBtn.innerText = 'กำลังส่ง...';
+                submitBtn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> กำลังส่ง...`;
+                lucide.createIcons();
 
                 await addDoc(collection(db, "reviews"), {
                     userName: userName,
@@ -283,7 +331,8 @@
                 alert('เกิดข้อผิดพลาดในการบันทึกรีวิว กรุณาลองใหม่อีกครั้ง');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = 'ส่งรีวิว';
+                submitBtn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i> ส่งรีวิว`;
+                lucide.createIcons();
             }
         };
 
@@ -294,8 +343,8 @@
         onSnapshot(q, (snapshot) => {
             if (snapshot.empty) {
                 reviewsGrid.innerHTML = `
-                    <div class="col-span-full text-center py-8 text-xs text-gray-400">
-                        ยังไม่มีรีวิวในขณะนี้ ร่วมเป็นคนแรกที่รีวิวเครื่องดื่มของเรา!
+                    <div class="col-span-full text-center py-10 text-xs text-[#A39284]">
+                        ยังไม่มีรีวิวในขณะนี้ ร่วมเป็นคนแรกที่แบ่งปันความประทับใจ!
                     </div>
                 `;
                 return;
@@ -306,18 +355,23 @@
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 const cardHTML = `
-                    <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100/60 flex flex-col justify-between h-full transition duration-300 hover:shadow-md">
+                    <div class="py-4 border-b border-[#EADCD0]/60 flex flex-col justify-between">
                         <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <div>
-                                    <h3 class="text-xs font-bold text-gray-900">${data.userName || 'Guest'}</h3>
-                                    <p class="text-[10px] text-gray-400">${formatDate(data.createdAt)}</p>
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-7 h-7 rounded-full bg-[#FAF0E6] text-[#A37B64] font-medium text-xs flex items-center justify-center border border-[#EADCD0]">
+                                        ${(data.userName || 'G').charAt(0).toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-[#3D2B1F]">${data.userName || 'Guest'}</h3>
+                                        <p class="text-[10px] text-[#A39284]">${formatDate(data.createdAt)}</p>
+                                    </div>
                                 </div>
                                 <div class="flex space-x-0.5">
                                     ${renderStars(data.rating)}
                                 </div>
                             </div>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                            <p class="text-xs text-[#594B40] leading-relaxed font-light pl-9">
                                 ${data.comment}
                             </p>
                         </div>
@@ -329,7 +383,7 @@
             lucide.createIcons();
         }, (error) => {
             console.error("Error loading reviews: ", error);
-            reviewsGrid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-red-400">ไม่สามารถโหลดรีวิวได้</div>`;
+            reviewsGrid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-rose-500">ไม่สามารถโหลดรีวิวได้</div>`;
         });
 
         lucide.createIcons();
