@@ -32,7 +32,6 @@
             justify-content: center;
             margin-bottom: 15px;
         }
-        /* ตกแต่งปุ่ม Google เพิ่มเติมเพื่อให้เข้ากับ Firebase Pop-up */
         .btn-google-custom {
             display: flex;
             align-items: center;
@@ -66,6 +65,34 @@
         .switch-page-text a:hover {
             text-decoration: underline;
         }
+
+        /* Style เพิ่มเติมสำหรับสลับหน้าลืมรหัสผ่าน */
+        .hidden-view {
+            display: none !important;
+        }
+        .info-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            text-align: center;
+        }
+        .back-to-login-btn {
+            background: none;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+        .back-to-login-btn:hover {
+            color: #3d2514;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +110,9 @@
     </header>
 
     <main class="login-container">
-        <div class="login-card">
+        
+        <!-- ===== View 1: หน้าเข้าสู่ระบบ (Login View) ===== -->
+        <div class="login-card" id="login-view">
             
             <div class="icon-wrapper">
                 <i data-lucide="coffee" style="width:32px; height:32px;"></i>
@@ -122,7 +151,7 @@
                         <input type="checkbox" name="remember">
                         <span>จดจำฉันไว้</span>
                     </label>
-                    <a href="#" onclick="forgotPassword()" class="forgot-link">ลืมรหัสผ่าน?</a>
+                    <a href="javascript:void(0)" onclick="switchView('forgot')" class="forgot-link">ลืมรหัสผ่าน?</a>
                 </div>
 
                 <button type="submit" class="btn-submit">เข้าสู่ระบบ</button>
@@ -147,6 +176,40 @@
             </div>
 
         </div>
+
+        <!-- ===== View 2: หน้าลืมรหัสผ่าน / รีเซ็ตรหัสผ่าน (Forgot Password View) ===== -->
+        <div class="login-card hidden-view" id="forgot-view">
+            
+            <div class="icon-wrapper">
+                <i data-lucide="key-round" style="width:32px; height:32px;"></i>
+            </div>
+
+            <h1>ลืมรหัสผ่าน?</h1>
+            <p class="subtitle">รีเซ็ตรหัสผ่านบัญชี Smart Coffee Menu</p>
+            <p class="info-text">กรุณากรอกอีเมลที่ใช้สมัครสมาชิก ระบบจะส่งลิงก์เปลี่ยนรหัสผ่านไปที่อีเมลของคุณ</p>
+
+            <form class="login-form" onsubmit="executeResetPassword(event)">
+                
+                <div class="form-group">
+                    <label for="reset-email">อีเมลผู้ใช้งาน</label>
+                    <div class="input-relative">
+                        <span class="input-icon-left">
+                            <i data-lucide="mail" style="width:20px; height:20px;"></i>
+                        </span>
+                        <input type="email" id="reset-email" placeholder="admin@coffee.com" class="form-control" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">ส่งลิงก์รีเซ็ตรหัสผ่าน</button>
+            </form>
+
+            <button type="button" class="back-to-login-btn" onclick="switchView('login')">
+                <i data-lucide="arrow-left" style="width:16px; height:16px;"></i>
+                <span>กลับไปหน้าเข้าสู่ระบบ</span>
+            </button>
+
+        </div>
+
     </main>
 
     <footer class="main-footer">
@@ -190,7 +253,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // ผูกฟังก์ชันเข้ากับ window เพื่อใช้งานร่วมกับ HTML Event Handlers
+        // ฟังก์ชันเข้าสู่ระบบ
         window.executeLogin = async function(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
@@ -198,7 +261,6 @@
 
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
                 alert(`ยินดีต้อนรับเข้าสู่ระบบสำเร็จ!`);
                 window.location.href = "Menu.html";
             } catch (error) {
@@ -211,6 +273,7 @@
             }
         }
 
+        // ฟังก์ชันเข้าสู่ระบบด้วย Google
         window.loginWithGoogle = async function() {
             const provider = new GoogleAuthProvider();
             try {
@@ -224,21 +287,44 @@
             }
         }
 
-        window.forgotPassword = async function() {
-            const email = prompt("กรุณากรอกอีเมลที่ใช้สมัครสมาชิกเพื่อรีเซ็ตรหัสผ่าน:");
-            if (!email) return;
+        // ฟังก์ชันส่งลิงก์ตั้งรหัสผ่านใหม่ไปยังอีเมล
+        window.executeResetPassword = async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('reset-email').value;
 
             try {
                 await sendPasswordResetEmail(auth, email);
-                alert("ระบบได้ส่งลิงก์สำหรับรีเซ็ตรหัสผ่านไปยังอีเมลของคุณแล้ว โปรดตรวจสอบกล่องจดหมาย");
+                alert("ระบบได้ส่งลิงก์สำหรับรีเซ็ตรหัสผ่านไปยังอีเมล " + email + " เรียบร้อยแล้ว โปรดตรวจสอบกล่องจดหมายของคุณ");
+                switchView('login');
             } catch (error) {
                 console.error(error);
-                alert("ไม่สามารถส่งอีเมลรีเซ็ตรหัสผ่านได้: " + error.message);
+                if (error.code === 'auth/user-not-found') {
+                    alert('ไม่พบอีเมลนี้ในระบบ กรุณาตรวจสอบอีกครั้ง');
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('รูปแบบอีเมลไม่ถูกต้อง');
+                } else {
+                    alert("ไม่สามารถส่งอีเมลรีเซ็ตรหัสผ่านได้: " + error.message);
+                }
             }
         }
     </script>
 
     <script>
+        // ฟังก์ชันสลับหน้าจดจำรหัสผ่าน / ลืมรหัสผ่าน
+        function switchView(viewName) {
+            const loginView = document.getElementById('login-view');
+            const forgotView = document.getElementById('forgot-view');
+
+            if (viewName === 'forgot') {
+                loginView.classList.add('hidden-view');
+                forgotView.classList.remove('hidden-view');
+            } else {
+                forgotView.classList.add('hidden-view');
+                loginView.classList.remove('hidden-view');
+            }
+            lucide.createIcons();
+        }
+
         // ฟังก์ชันตกแต่งไอคอนและการเปิด/ปิดตาแสดงรหัสผ่าน
         lucide.createIcons();
 
