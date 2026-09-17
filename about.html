@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>เกี่ยวกับระบบ - Smart Coffee Menu</title>
     
     <!-- PWA & Mobile Meta Optimization -->
-    <meta name="theme-color" content="#3D2B1F">
+    <meta name="theme-color" content="#2B1B12">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- Tailwind CSS & Icons -->
+    <!-- Tailwind CSS & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,191 +20,224 @@
     <style>
         body {
             font-family: 'Prompt', sans-serif;
-            background-color: #FAF6F0;
-            color: #4A3E3D;
+            background-color: #F8F4EE;
+            color: #362820;
             -webkit-tap-highlight-color: transparent;
         }
-        /* Curved Header for Mobile */
         .hero-curve {
-            border-bottom-left-radius: 2rem;
-            border-bottom-right-radius: 2rem;
+            border-bottom-left-radius: 2.5rem;
+            border-bottom-right-radius: 2.5rem;
         }
-        .smooth-shadow {
-            box-shadow: 0 10px 30px -10px rgba(120, 80, 50, 0.08);
+        .custom-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(61, 43, 31, 0.08), 0 8px 10px -6px rgba(61, 43, 31, 0.04);
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen text-[#4A3E3D] pb-16 md:pb-0">
+<body class="flex flex-col min-h-full pb-20 md:pb-0">
 
     <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-50 bg-[#3D2B1F]/95 backdrop-blur-md text-[#F7F3EE] px-4 sm:px-8 md:px-12 py-3.5 flex flex-wrap justify-between items-center shadow-sm gap-3">
-        <div class="flex items-center space-x-2.5 font-medium text-base tracking-wide">
-            <div class="w-8 h-8 rounded-full bg-[#523A2A] flex items-center justify-center text-amber-200/90 shadow-inner">
-                <i data-lucide="coffee" class="w-4 h-4"></i>
+    <header class="sticky top-0 z-50 bg-[#2B1B12]/95 backdrop-blur-md text-[#F7F3EE] border-b border-amber-900/20 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            
+            <!-- Logo -->
+            <a href="Menu.html" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-amber-100 shadow-md group-hover:scale-105 transition-transform">
+                    <i data-lucide="coffee" class="w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-lg text-white tracking-wide">Smart Coffee</span>
+            </a>
+
+            <!-- Navigation Bar -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-amber-200/80">
+                <a href="Menu.html" class="hover:text-white transition-colors py-1">Menu</a>
+                <a href="about.html" class="text-white font-semibold border-b-2 border-amber-400 py-1">About</a>
+                <a href="reviews.html" class="hover:text-white transition-colors py-1">Reviews</a>
+                <a href="orders.html" class="hover:text-white transition-colors py-1">Orders</a>
+                <a href="admin.html" class="text-amber-300 hover:text-white bg-amber-950/60 hover:bg-amber-900/80 px-3 py-1.5 rounded-lg border border-amber-500/30 transition-all flex items-center gap-1.5 text-xs">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin
+                </a>
+            </nav>
+
+            <!-- Auth Status Container -->
+            <div id="authContainer" class="flex items-center">
+                <a href="login.html" class="bg-amber-500 hover:bg-amber-400 text-[#2B1B12] px-4 py-1.5 rounded-full font-semibold transition-all text-xs shadow-sm">
+                    Sign In
+                </a>
             </div>
-            <span class="font-semibold text-white tracking-wide">Smart Coffee</span>
-        </div>
-
-        <!-- Navigation Bar สไตล์มินิมอลตรงตามรูปภาพ -->
-        <nav class="flex items-center space-x-6 text-sm sm:text-base font-normal text-[#E0C9A6]">
-            <a href="Menu.html" class="py-1 hover:text-white transition-colors duration-200">Menu</a>
-            
-            <!-- หน้าปัจจุบัน (About) ตัวหนา สีขาว และเส้นใต้สีเหลืองทอง -->
-            <a href="about.html" class="py-1 text-white font-bold border-b-2 border-[#EAB308] transition-all">About</a>
-            
-            <a href="reviews.html" class="py-1 hover:text-white transition-colors duration-200">Reviews</a>
-            <a href="orders.html" class="py-1 hover:text-white transition-colors duration-200">Orders</a>
-
-            <!-- ปุ่ม Admin Navigation -->
-            <a href="admin.html" class="ml-2 text-amber-200/90 hover:text-amber-100 hover:bg-amber-900/40 transition-all duration-200 flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/20 text-xs">
-                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin
-            </a>
-        </nav>
-
-        <!-- Auth Status Container -->
-        <div id="authContainer">
-            <a href="login.html" class="bg-[#F7F3EE] text-[#3D2B1F] hover:bg-white px-4 py-1.5 rounded-full font-medium transition-all shadow-xs text-xs">
-                Sign In
-            </a>
         </div>
     </header>
 
     <!-- Hero Banner Section -->
-    <section class="relative bg-cover bg-center hero-curve overflow-hidden shadow-sm" 
-             style="background-image: linear-gradient(to bottom, rgba(40,25,18,0.82), rgba(40,25,18,0.65)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=800&auto=format&fit=crop');">
+    <section class="relative bg-cover bg-center hero-curve overflow-hidden shadow-lg border-b border-amber-950/20" 
+             style="background-image: linear-gradient(180deg, rgba(35, 21, 13, 0.88) 0%, rgba(45, 29, 18, 0.75) 100%), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=1200&auto=format&fit=crop');">
         
-        <div class="px-5 py-10 sm:py-14 max-w-xl mx-auto text-center sm:text-left">
-            <span class="bg-[#A37B64] text-white text-[10px] font-medium px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-2 shadow-xs">
+        <div class="max-w-4xl mx-auto px-6 py-14 sm:py-20 text-center relative z-10">
+            <span class="bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-semibold px-3.5 py-1 rounded-full uppercase tracking-wider inline-block mb-3 backdrop-blur-sm">
                 เกี่ยวกับเรา
             </span>
-            <h1 class="text-white text-2xl sm:text-3xl font-semibold">เกี่ยวกับระบบ</h1>
-            <p class="text-amber-200 text-3xl sm:text-4xl font-bold tracking-tight my-1">Smart Coffee Menu</p>
-            <p class="text-gray-200 text-xs sm:text-sm leading-relaxed mt-2 font-light">
-                ระบบสั่งซื้อเครื่องดื่มล่วงหน้าและวิเคราะห์พฤติกรรมการสั่งซื้อแบบ Real-time เพื่อประสบการณ์กาแฟที่รวดเร็วและตรงใจคุณที่สุด
+            <h1 class="text-white text-3xl sm:text-5xl font-bold tracking-tight mb-2">Smart Coffee Menu</h1>
+            <p class="text-amber-200/90 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed mt-3">
+                ยกระดับประสบการณ์การสั่งกาแฟด้วยระบบจัดการคำสั่งซื้อแบบ Real-time สะดวกรวดเร็ว แม่นยำ ตอบโจทย์ทุกไลฟ์สไตล์
             </p>
         </div>
     </section>
 
     <!-- Main Content Container -->
-    <main class="px-4 py-8 max-w-4xl mx-auto w-full space-y-5 flex-grow">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-10 flex-grow w-full">
 
-        <!-- Overview Card -->
-        <div class="bg-white/90 backdrop-blur-md rounded-2xl p-6 border border-[#F0E6DD] smooth-shadow flex flex-col justify-between">
-            <div class="flex items-center space-x-3 mb-3">
-                <div class="p-2.5 bg-[#FAF6F0] text-[#8C6D58] rounded-xl border border-[#EDE3DA]">
-                    <i data-lucide="store" class="w-5 h-5"></i>
+        <!-- Section 1: Overview & Mission Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Overview Card -->
+            <div class="custom-glass rounded-2xl p-6 sm:p-8 border border-amber-900/10 shadow-sm card-hover flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center mb-5 shadow-inner">
+                        <i data-lucide="store" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-[#2B1B12] mb-3">ภาพรวมของระบบ</h2>
+                    <p class="text-[#5C4A3E] text-sm leading-relaxed font-normal">
+                        Smart Coffee Menu คือระบบสั่งเครื่องดื่มอัจฉริยะผ่านมือถือ ช่วยให้คุณเลือกปรับแต่งระดับความหวาน บรรจุภัณฑ์ และสั่งล่วงหน้าได้อย่างง่ายดาย พร้อมระบบแจ้งเตือนสถานะการชงแบบเรียลไทม์
+                    </p>
                 </div>
-                <h2 class="text-base font-semibold text-[#3D2B1F]">Overview</h2>
             </div>
-            <p class="text-[#6E5D50] text-xs sm:text-sm leading-relaxed font-light">
-                Smart Coffee Menu คือระบบสั่งกาแฟผ่านหน้าจอมือถือ ช่วยให้คุณสั่งเครื่องดื่มล่วงหน้า เลือกระดับความหวาน และเลือกถุงเก็บความเย็นได้ตามต้องการ พร้อมอัปเดตสถานะการทำเครื่องดื่มแบบเรียลไทม์
-            </p>
+
+            <!-- Mission Card -->
+            <div class="bg-gradient-to-br from-[#2B1B12] to-[#422B1D] text-white rounded-2xl p-6 sm:p-8 shadow-md card-hover flex flex-col justify-between border border-amber-900/30">
+                <div>
+                    <div class="w-12 h-12 bg-amber-500/20 text-amber-300 rounded-xl flex items-center justify-center mb-5 border border-amber-400/20">
+                        <i data-lucide="rocket" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-3">เป้าหมายของเรา</h2>
+                    <p class="text-amber-100/80 text-sm leading-relaxed font-light">
+                        มุ่งมั่นนำเทคโนโลยีมาช่วยลดระยะเวลาการรอคิว ยกระดับการบริการของบาริสต้าหน้าร้านให้มีประสิทธิภาพสูงสุด เพื่อมอบเครื่องดื่มคุณภาพเยี่ยมและความประทับใจในทุกแก้ว
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <!-- Mission Card -->
-        <div class="bg-[#3D2B1F] text-[#F7F3EE] rounded-2xl p-6 relative overflow-hidden smooth-shadow">
-            <div class="relative z-10">
-                <div class="flex items-center space-x-2.5 mb-2.5">
-                    <i data-lucide="rocket" class="w-5 h-5 text-amber-300"></i>
-                    <h2 class="text-base font-semibold">Mission</h2>
-                </div>
-                <p class="text-[#D1C2B5] text-xs sm:text-sm leading-relaxed font-light">
-                    มุ่งมั่นพัฒนาเทคโนโลยีสั่งอาหาร-เครื่องดื่ม เพื่อช่วยลดเวลาการรอคิว ยกระดับการบริการหน้าร้านให้สะดวกรวดเร็ว และมอบประสบการณ์ที่ดีที่สุดแก่ลูกค้าทุกท่าน
-                </p>
+        <!-- Section 2: Quick Highlights / Stats -->
+        <div class="bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-amber-900/5 shadow-xs grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="p-3">
+                <p class="text-2xl sm:text-3xl font-bold text-amber-800">0 min</p>
+                <p class="text-xs text-[#7C6A5D] mt-1 font-medium">ไม่ต้องยืนรอคิว</p>
+            </div>
+            <div class="p-3 border-l border-amber-900/10">
+                <p class="text-2xl sm:text-3xl font-bold text-amber-800">100%</p>
+                <p class="text-xs text-[#7C6A5D] mt-1 font-medium">เลือกความหวานได้เอง</p>
+            </div>
+            <div class="p-3 border-l border-amber-900/10">
+                <p class="text-2xl sm:text-3xl font-bold text-amber-800">Live</p>
+                <p class="text-xs text-[#7C6A5D] mt-1 font-medium">อัปเดตสถานะ Real-time</p>
+            </div>
+            <div class="p-3 border-l border-amber-900/10">
+                <p class="text-2xl sm:text-3xl font-bold text-amber-800">Fast</p>
+                <p class="text-xs text-[#7C6A5D] mt-1 font-medium">รับออเดอร์แม่นยำ</p>
             </div>
         </div>
 
-        <!-- Features Grid -->
+        <!-- Section 3: Features Grid -->
         <div class="pt-4">
-            <h2 class="text-base font-semibold text-[#3D2B1F] text-center mb-1">ฟีเจอร์เด่นของระบบ</h2>
-            <p class="text-xs text-[#8C7A6B] text-center mb-5 font-light">ออกแบบมาเพื่อความสะดวกสบายของผู้ใช้งาน</p>
+            <div class="text-center max-w-md mx-auto mb-8">
+                <h2 class="text-2xl font-bold text-[#2B1B12]">ฟีเจอร์เด่นของระบบ</h2>
+                <p class="text-xs sm:text-sm text-[#7C6A5D] mt-1 font-light">ออกแบบและพัฒนาขึ้นเพื่อความสะดวกสบายสูงสุดของผู้ใช้งาน</p>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-                <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 smooth-shadow border border-[#F0E6DD] flex items-start space-x-3.5">
-                    <div class="p-2.5 bg-[#FAF6F0] text-[#A37B64] rounded-xl shrink-0 border border-[#EDE3DA]">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                
+                <div class="custom-glass rounded-2xl p-6 card-hover border border-amber-900/10 flex flex-col items-start">
+                    <div class="w-10 h-10 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center mb-4">
                         <i data-lucide="clock" class="w-5 h-5"></i>
                     </div>
-                    <div>
-                        <h3 class="font-semibold text-xs sm:text-sm text-[#3D2B1F] mb-1">Real-time Status</h3>
-                        <p class="text-[11px] sm:text-xs text-[#7A685A] leading-relaxed font-light">เช็กสถานะการชงได้ทันทีจากมือถือ ไม่ต้องยืนรอหน้าเคาน์เตอร์</p>
-                    </div>
+                    <h3 class="font-bold text-base text-[#2B1B12] mb-1.5">Real-time Status</h3>
+                    <p class="text-xs text-[#5C4A3E] leading-relaxed font-light">
+                        ติดตามสถานะการชงเครื่องดื่มของคุณได้ทันทีผ่านหน้าจอ ไม่ต้องคอยสอบถามพนักงาน
+                    </p>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 smooth-shadow border border-[#F0E6DD] flex items-start space-x-3.5">
-                    <div class="p-2.5 bg-[#FAF6F0] text-[#A37B64] rounded-xl shrink-0 border border-[#EDE3DA]">
+                <div class="custom-glass rounded-2xl p-6 card-hover border border-amber-900/10 flex flex-col items-start">
+                    <div class="w-10 h-10 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center mb-4">
                         <i data-lucide="sliders" class="w-5 h-5"></i>
                     </div>
-                    <div>
-                        <h3 class="font-semibold text-xs sm:text-sm text-[#3D2B1F] mb-1">Customizable</h3>
-                        <p class="text-[11px] sm:text-xs text-[#7A685A] leading-relaxed font-light">เลือกความหวาน และเลือกเพิ่มถุงเก็บความเย็นเพื่อรักษาความสดใหม่</p>
-                    </div>
+                    <h3 class="font-bold text-base text-[#2B1B12] mb-1.5">Customizable Options</h3>
+                    <p class="text-xs text-[#5C4A3E] leading-relaxed font-light">
+                        ปรับแต่งเมนูตามใจชอบ ทั้งระดับความหวาน เลือกท็อปปิ้ง หรือเพิ่มถุงเก็บความเย็น
+                    </p>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 smooth-shadow border border-[#F0E6DD] flex items-start space-x-3.5">
-                    <div class="p-2.5 bg-[#FAF6F0] text-[#A37B64] rounded-xl shrink-0 border border-[#EDE3DA]">
+                <div class="custom-glass rounded-2xl p-6 card-hover border border-amber-900/10 flex flex-col items-start">
+                    <div class="w-10 h-10 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center mb-4">
                         <i data-lucide="shield-check" class="w-5 h-5"></i>
                     </div>
-                    <div>
-                        <h3 class="font-semibold text-xs sm:text-sm text-[#3D2B1F] mb-1">Admin Control</h3>
-                        <p class="text-[11px] sm:text-xs text-[#7A685A] leading-relaxed font-light">ระบบหลังบ้านบาริสต้า รับออเดอร์และอัปเดตสถานะงานได้เสถียรแม่นยำ</p>
-                    </div>
+                    <h3 class="font-bold text-base text-[#2B1B12] mb-1.5">Admin Management</h3>
+                    <p class="text-xs text-[#5C4A3E] leading-relaxed font-light">
+                        ระบบหลังบ้านสำหรับบาริสต้า ช่วยให้การรับออเดอร์และจัดคิวเป็นไปอย่างมีระเบียบ
+                    </p>
                 </div>
+
             </div>
         </div>
 
-        <!-- Call to Action Card -->
-        <div class="bg-[#3D2B1F] text-white rounded-2xl p-6 text-center space-y-3 mt-8 smooth-shadow">
-            <h2 class="text-base font-semibold">พร้อมสั่งเครื่องดื่มหรือยัง?</h2>
-            <p class="text-[#D1C2B5] text-xs font-light max-w-sm mx-auto">
-                เริ่มต้นเลือกรสชาติกาแฟแก้วโปรดของคุณได้เลยตอนนี้
+        <!-- Section 4: Call to Action Card -->
+        <div class="bg-gradient-to-r from-[#2B1B12] via-[#3D2B1F] to-[#2B1B12] text-white rounded-2xl p-8 sm:p-10 text-center space-y-4 shadow-lg border border-amber-900/30">
+            <h2 class="text-xl sm:text-2xl font-bold">พร้อมสัมผัสประสบการณ์ใหม่หรือยัง?</h2>
+            <p class="text-amber-100/80 text-xs sm:text-sm font-light max-w-md mx-auto leading-relaxed">
+                เลือกสรรเมนูกาแฟโปรดของคุณ แล้วสั่งซื้อล่วงหน้าได้ทันทีเพียงไม่กี่คลิก
             </p>
-            <div class="flex flex-col sm:flex-row gap-2.5 justify-center pt-2 max-w-sm mx-auto">
-                <a href="Menu.html" class="bg-[#523A2A] hover:bg-[#684B37] text-white py-2.5 px-6 rounded-xl text-xs font-medium transition duration-200 block border border-amber-500/20">
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-3 max-w-md mx-auto">
+                <a href="Menu.html" class="bg-amber-500 hover:bg-amber-400 text-[#2B1B12] font-semibold py-3 px-6 rounded-xl text-xs sm:text-sm transition-all shadow-md block">
                     ไปที่หน้าสั่งซื้อ (Menu)
                 </a>
-                <a href="admin.html" class="bg-white/10 hover:bg-white/20 text-[#E5D8CC] py-2.5 px-6 rounded-xl text-xs font-medium border border-white/15 block transition duration-200">
-                    เข้าสู่ระบบผู้ดูแล (Admin)
+                <a href="admin.html" class="bg-white/10 hover:bg-white/20 text-amber-100 font-medium py-3 px-6 rounded-xl text-xs sm:text-sm border border-white/20 block transition-all">
+                    ระบบผู้ดูแล (Admin)
                 </a>
             </div>
         </div>
 
     </main>
 
-    <!-- Mobile Bottom App Bar (แสดงผลเฉพาะบนมือถือ) -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-[#E5D8CC] py-2.5 px-6 flex justify-between items-center z-50 shadow-lg">
-        <a href="Menu.html" class="flex flex-col items-center text-[#9C8B7E] hover:text-[#3D2B1F]">
+    <!-- Mobile Bottom Navigation (แสดงเฉพาะหน้าจอมือถือ) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#2B1B12]/95 backdrop-blur-md border-t border-amber-900/30 py-2 px-6 flex justify-around items-center z-50 text-amber-200/70">
+        <a href="Menu.html" class="flex flex-col items-center hover:text-white transition-colors py-1">
             <i data-lucide="coffee" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-0.5 font-normal">เมนู</span>
+            <span class="text-[10px] mt-1">เมนู</span>
         </a>
-        <a href="about.html" class="flex flex-col items-center text-[#3D2B1F] font-bold">
-            <i data-lucide="info" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-0.5">เกี่ยวกับ</span>
+        <a href="about.html" class="flex flex-col items-center text-white font-bold py-1">
+            <i data-lucide="info" class="w-5 h-5 text-amber-400"></i>
+            <span class="text-[10px] mt-1 text-amber-400">เกี่ยวกับ</span>
         </a>
-        <a href="reviews.html" class="flex flex-col items-center text-[#9C8B7E] hover:text-[#3D2B1F]">
+        <a href="reviews.html" class="flex flex-col items-center hover:text-white transition-colors py-1">
             <i data-lucide="star" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-0.5 font-normal">รีวิว</span>
+            <span class="text-[10px] mt-1">รีวิว</span>
         </a>
-        <a href="orders.html" class="flex flex-col items-center text-[#9C8B7E] hover:text-[#3D2B1F]">
+        <a href="orders.html" class="flex flex-col items-center hover:text-white transition-colors py-1">
             <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-0.5 font-normal">ออเดอร์</span>
+            <span class="text-[10px] mt-1">ออเดอร์</span>
         </a>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-[#EFE6DD] text-[#6E5D50] py-8 px-4 sm:px-8 md:px-16 mt-auto border-t border-[#E5D8CC] hidden md:block">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs space-y-4 md:space-y-0">
-            <div class="flex items-center gap-2 font-medium text-[#3D2B1F]">
-                <i data-lucide="coffee" class="w-4 h-4 text-[#8C6D58]"></i>
+    <!-- Footer (แสดงเฉพาะหน้าจอ Tablet/Desktop) -->
+    <footer class="bg-[#21140D] text-amber-200/60 py-8 px-4 border-t border-amber-900/20 mt-auto hidden md:block">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs gap-4">
+            <div class="flex items-center gap-2 font-semibold text-white">
+                <i data-lucide="coffee" class="w-4 h-4 text-amber-500"></i>
                 <span>Smart Coffee Menu</span>
             </div>
 
-            <div class="flex flex-wrap justify-center items-center gap-5 text-[#7A685A] font-light">
-                <a href="#" class="hover:text-[#3D2B1F] transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-[#3D2B1F] transition-colors">Terms of Service</a>
-                <a href="#" class="hover:text-[#3D2B1F] transition-colors">Contact Us</a>
+            <div class="flex items-center gap-6 font-light">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Contact Us</a>
             </div>
 
-            <div class="text-[#A39284] text-center md:text-right font-light text-[11px]">
+            <div class="font-light text-[11px]">
                 © 2026 Smart Coffee Menu. All rights reserved.
             </div>
         </div>
@@ -232,8 +265,8 @@
             if (user) {
                 const displayName = user.displayName || user.email.split('@')[0];
                 authContainer.innerHTML = `
-                    <div class="flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full border border-white/10">
-                        <span class="text-xs text-[#E5D8CC]">สวัสดี, <strong class="text-white font-medium">${displayName}</strong></span>
+                    <div class="flex items-center gap-2 bg-amber-900/40 px-3 py-1 rounded-full border border-amber-500/30">
+                        <span class="text-xs text-amber-100">สวัสดี, <strong class="text-white font-medium">${displayName}</strong></span>
                         <button onclick="handleSignOut()" class="bg-rose-500/80 hover:bg-rose-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all ml-1">
                             ออก
                         </button>
@@ -241,7 +274,7 @@
                 `;
             } else {
                 authContainer.innerHTML = `
-                    <a href="login.html" class="bg-[#F7F3EE] text-[#3D2B1F] hover:bg-white px-4 py-1.5 rounded-full font-medium transition-all shadow-xs text-xs">
+                    <a href="login.html" class="bg-amber-500 hover:bg-amber-400 text-[#2B1B12] px-4 py-1.5 rounded-full font-semibold transition-all text-xs shadow-sm">
                         Sign In
                     </a>
                 `;
