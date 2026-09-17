@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>รายการสั่งซื้อ - Smart Coffee Menu</title>
+    
+    <meta name="theme-color" content="#2B1810">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Noto Sans Thai', 'Inter', sans-serif;
+            background-color: #FAF5F0;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5D5C5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-[#2C1A14] pb-20 md:pb-0">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-[#2B1810] text-white px-4 sm:px-8 py-3.5 flex justify-between items-center shadow-md">
+        <a href="Menu.html" class="flex items-center space-x-2.5 font-bold text-base sm:text-lg tracking-wide hover:opacity-90 transition">
+            <div class="bg-[#EFE3D3] text-[#2B1810] p-1.5 rounded-lg">
+                <i data-lucide="coffee" class="w-5 h-5"></i>
+            </div>
+            <span>Smart Coffee</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-amber-100/80">
+            <a href="Menu.html" class="hover:text-white transition">เมนู</a>
+            <a href="about.html" class="hover:text-white transition">เกี่ยวกับเรา</a>
+            <a href="reviews.html" class="hover:text-white transition">รีวิว</a>
+            <a href="orders.html" class="text-white font-semibold underline underline-offset-8 decoration-amber-400 decoration-2">รายการสั่งซื้อ</a>
+        </nav>
+
+        <!-- Auth Button Container -->
+        <div id="authContainer" class="flex items-center">
+            <a href="login.html" class="bg-amber-100 text-[#2B1810] hover:bg-white px-4 py-1.5 rounded-full font-semibold transition text-xs shadow-sm">
+                เข้าสู่ระบบ
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-2xl mx-auto w-full px-4 sm:px-6 py-5 sm:py-8 flex-grow space-y-4">
+        
+        <!-- Page Title & Actions -->
+        <div class="flex items-center justify-between border-b border-amber-200/60 pb-3.5">
+            <div>
+                <h1 class="text-lg sm:text-2xl font-bold text-[#2B1810]">รายการสั่งซื้อ</h1>
+                <p class="text-[11px] sm:text-xs text-amber-900/60 mt-0.5">ติดตามสถานะแบบเรียลไทม์</p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="clearLocalBtn" class="hidden items-center space-x-1 bg-red-50 hover:bg-red-100 border border-red-200 px-2.5 py-1.5 rounded-xl text-xs font-medium text-red-600 transition active:scale-95">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span class="hidden sm:inline">ล้างประวัติเครื่องนี้</span>
+                </button>
+                <button id="refreshBtn" class="flex items-center space-x-1 bg-white border border-amber-200/80 hover:bg-amber-50 px-3 py-1.5 rounded-xl text-xs font-medium text-amber-950 transition shadow-sm active:scale-95">
+                    <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-amber-800" id="refreshIcon"></i>
+                    <span>รีเฟรช</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- State 1: Loading -->
+        <div id="loadingState" class="text-center py-16 space-y-3 bg-white/60 rounded-3xl border border-amber-100">
+            <div class="w-9 h-9 border-4 border-[#2B1810] border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p class="text-xs font-medium text-amber-900/70">กำลังโหลดรายละเอียดรายการสั่งซื้อ...</p>
+        </div>
+
+        <!-- State 2: Empty Orders -->
+        <div id="emptyOrders" class="hidden text-center py-12 bg-white rounded-3xl border border-dashed border-amber-200 p-6 space-y-3 shadow-sm">
+            <div class="w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+                <i data-lucide="shopping-bag" class="w-7 h-7"></i>
+            </div>
+            <p class="text-base font-bold text-gray-800">ยังไม่มีรายการสั่งซื้อ</p>
+            <p class="text-xs text-gray-500 max-w-xs mx-auto leading-relaxed">คุณยังไม่ได้ทำการสั่งซื้อ เลือกดูเมนูแสนอร่อยของเราได้เลย!</p>
+            <a href="Menu.html" class="inline-flex items-center space-x-2 bg-[#2B1810] text-white px-6 py-2.5 rounded-full text-xs font-semibold shadow-md hover:bg-[#42261A] transition active:scale-95 mt-2">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
+                <span>สั่งซื้อเลย</span>
+            </a>
+        </div>
+
+        <!-- State 3: Dynamic Order List -->
+        <div id="orderList" class="space-y-4"></div>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-100 px-6 py-2 flex justify-around items-center z-50 md:hidden shadow-lg">
+        <a href="Menu.html" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-amber-900">
+            <i data-lucide="coffee" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">เมนู</span>
+        </a>
+        <a href="orders.html" class="flex flex-col items-center space-y-1 text-[#2B1810] font-bold">
+            <i data-lucide="receipt" class="w-5 h-5"></i>
+            <span class="text-[10px]">รายการสั่งซื้อ</span>
+        </a>
+        <a href="reviews.html" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-amber-900">
+            <i data-lucide="star" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">รีวิว</span>
+        </a>
+        <a href="about.html" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-amber-900">
+            <i data-lucide="info" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">เกี่ยวกับเรา</span>
+        </a>
+    </div>
+
+    <!-- Desktop Footer -->
+    <footer class="hidden md:flex bg-[#EFE3D3]/50 text-gray-600 text-xs px-8 py-5 justify-between items-center border-t border-amber-200/50 mt-auto">
+        <a href="Menu.html" class="flex items-center space-x-2 font-bold text-gray-800">
+            <i data-lucide="coffee" class="w-4 h-4 text-amber-900"></i>
+            <span>Smart Coffee Menu</span>
+        </a>
+        <div>© 2026 Smart Coffee Menu. สงวนลิขสิทธิ์.</div>
+    </footer>
+
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2PeHkqJkYWI7KZrWelffRCn8zaztlwWs",
+            authDomain: "smart-coffee-menu.firebaseapp.com",
+            projectId: "smart-coffee-menu",
+            storageBucket: "smart-coffee-menu.firebasestorage.app",
+            messagingSenderId: "127109058663",
+            appId: "1:127109058663:web:f20d50f394e4be95f104c2",
+            measurementId: "G-90M77XGVFJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const authContainer = document.getElementById('authContainer');
+        const loadingState = document.getElementById('loadingState');
+        const emptyOrders = document.getElementById('emptyOrders');
+        const orderList = document.getElementById('orderList');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const refreshIcon = document.getElementById('refreshIcon');
+        const clearLocalBtn = document.getElementById('clearLocalBtn');
+
+        let currentUserId = null;
+        let currentUserEmail = null;
+        let unsubscribeOrders = null;
+
+        // Auth state listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUserId = user.uid;
+                currentUserEmail = user.email;
+                const displayName = user.displayName || user.email.split('@')[0];
+                authContainer.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-amber-100 hidden sm:inline">สวัสดี, <strong class="text-white font-semibold">${displayName}</strong></span>
+                        <button id="logoutBtn" class="bg-red-500/80 hover:bg-red-600 text-white px-3 py-1 rounded-full text-xs font-medium transition active:scale-95">
+                            ออกจากระบบ
+                        </button>
+                    </div>
+                `;
+                document.getElementById('logoutBtn')?.addEventListener('click', handleSignOut);
+            } else {
+                currentUserId = null;
+                currentUserEmail = null;
+                authContainer.innerHTML = `
+                    <a href="login.html" class="bg-amber-100 text-[#2B1810] hover:bg-white px-4 py-1.5 rounded-full font-semibold transition text-xs shadow-sm">
+                        เข้าสู่ระบบ
+                    </a>
+                `;
+            }
+            if (window.lucide) lucide.createIcons();
+            setupRealtimeOrders();
+        });
+
+        // Retrieve local storage orders
+        function getLocalOrders() {
+            let orders = [];
+            const possibleKeys = [
+                'smart_coffee_orders', 'orders', 'latest_order', 
+                'my_orders', 'current_order', 'cart_order'
+            ];
+            
+            possibleKeys.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data) {
+                    try {
+                        const parsed = JSON.parse(data);
+                        if (Array.isArray(parsed)) {
+                            parsed.forEach(item => {
+                                if (item) orders.push(item);
+                            });
+                        } else if (typeof parsed === 'object' && parsed !== null) {
+                            orders.push(parsed);
+                        }
+                    } catch (e) {
+                        console.error("Local Storage Parsing Error:", e);
+                    }
+                }
+            });
+
+            const uniqueOrders = [];
+            const seenIds = new Set();
+
+            orders.forEach((item, index) => {
+                let orderObj = item;
+                if (!item.id && !item.orderId && (item.name || item.title || Array.isArray(item))) {
+                    orderObj = {
+                        id: `LOC-${Date.now()}-${index}`,
+                        createdAt: new Date().toLocaleString('th-TH'),
+                        items: Array.isArray(item) ? item : [item],
+                        totalPrice: item.price || item.totalPrice || 0,
+                        status: 'pending'
+                    };
+                }
+
+                const id = orderObj.orderId || orderObj.id || `LOC-${index}`;
+                if (!seenIds.has(id)) {
+                    seenIds.add(id);
+                    uniqueOrders.push(orderObj);
+                }
+            });
+
+            return uniqueOrders;
+        }
+
+        function setupRealtimeOrders() {
+            if (unsubscribeOrders) unsubscribeOrders();
+
+            loadingState.classList.remove('hidden');
+            emptyOrders.classList.add('hidden');
+            orderList.innerHTML = '';
+
+            let localOrders = [];
+            const rawLocalData = getLocalOrders();
+            
+            if (rawLocalData.length > 0) {
+                clearLocalBtn.classList.remove('hidden');
+                clearLocalBtn.classList.add('flex');
+            } else {
+                clearLocalBtn.classList.add('hidden');
+            }
+
+            rawLocalData.forEach((item, index) => {
+                let itemsList = item.items || item.cart || item.orderList || [];
+                if (!Array.isArray(itemsList) && typeof itemsList === 'object') {
+                    itemsList = [itemsList];
+                }
+                
+                if (itemsList.length === 0 && (item.name || item.title)) {
+                    itemsList = [item];
+                }
+
+                localOrders.push({
+                    id: item.orderId || item.id || (`ORD-${Math.floor(100000 + Math.random() * 900000)}`),
+                    createdAt: item.dateTime || item.date || item.createdAt || new Date().toLocaleString('th-TH'),
+                    rawDate: new Date(item.dateTime || item.date || item.createdAt || Date.now()),
+                    items: itemsList,
+                    totalPrice: item.totalPrice || item.total || item.grandTotal || item.amount || 0,
+                    status: item.status || 'pending',
+                    paymentMethod: item.paymentMethod || 'พร้อมเพย์ (สแกน QR)',
+                    isLocal: true
+                });
+            });
+
+            try {
+                const ordersRef = collection(db, "orders");
+                unsubscribeOrders = onSnapshot(ordersRef, (snapshot) => {
+                    let combinedOrders = [...localOrders];
+
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const orderUserId = data.userId || data.uid || data.user_id;
+                        const orderEmail = data.userEmail || data.email;
+
+                        const isMyOrder = !currentUserId || 
+                                          !orderUserId ||
+                                          (orderUserId === currentUserId) || 
+                                          (currentUserEmail && orderEmail === currentUserEmail);
+
+                        if (isMyOrder) {
+                            let dateStr = 'ไม่ระบุเวลา';
+                            let rawDate = new Date(0);
+
+                            if (data.createdAt) {
+                                const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+                                rawDate = date;
+                                dateStr = date.toLocaleString('th-TH', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                            }
+
+                            const isExisting = combinedOrders.some(o => o.id === doc.id);
+                            if (!isExisting) {
+                                combinedOrders.push({
+                                    id: doc.id,
+                                    createdAt: dateStr,
+                                    rawDate: rawDate,
+                                    items: data.items || data.cart || data.orderList || [],
+                                    totalPrice: data.totalPrice || data.total || data.amount || 0,
+                                    status: data.status || 'pending',
+                                    paymentMethod: data.paymentMethod || 'พร้อมเพย์ (สแกน QR)',
+                                    isLocal: false
+                                });
+                            }
+                        }
+                    });
+
+                    loadingState.classList.add('hidden');
+                    combinedOrders.sort((a, b) => b.rawDate - a.rawDate);
+
+                    if (combinedOrders.length === 0) {
+                        emptyOrders.classList.remove('hidden');
+                    } else {
+                        renderOrders(combinedOrders);
+                    }
+                }, (error) => {
+                    console.warn("Firestore error:", error);
+                    loadingState.classList.add('hidden');
+                    if (localOrders.length > 0) renderOrders(localOrders);
+                    else emptyOrders.classList.remove('hidden');
+                });
+            } catch (err) {
+                console.error("Firestore init error:", err);
+                loadingState.classList.add('hidden');
+                if (localOrders.length > 0) renderOrders(localOrders);
+                else emptyOrders.classList.remove('hidden');
+            }
+        }
+
+        // Render Order Cards
+        function renderOrders(orders) {
+            let html = '';
+
+            orders.forEach((order) => {
+                const status = (order.status || 'pending').toLowerCase();
+                let currentStep = 1;
+                let statusBadge = '';
+                let isCancelled = status === 'cancelled' || status === 'ยกเลิก';
+
+                if (status === 'ready' || status === 'พร้อมรับสินค้า' || status === 'พร้อมรับ') {
+                    currentStep = 2;
+                    statusBadge = `
+                        <span class="bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-bl-xl flex items-center space-x-1 shadow-sm">
+                            <i data-lucide="bell" class="w-3 h-3 animate-bounce"></i>
+                            <span>พร้อมรับสินค้า</span>
+                        </span>`;
+                } else if (status === 'completed' || status === 'รับสินค้าแล้ว' || status === 'เสร็จสิ้น') {
+                    currentStep = 3;
+                    statusBadge = `
+                        <span class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-bl-xl flex items-center space-x-1 shadow-sm">
+                            <i data-lucide="check-circle-2" class="w-3 h-3"></i>
+                            <span>เสร็จสิ้น</span>
+                        </span>`;
+                } else if (isCancelled) {
+                    currentStep = 0;
+                    statusBadge = `
+                        <span class="bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-bl-xl flex items-center space-x-1 shadow-sm">
+                            <i data-lucide="x-circle" class="w-3 h-3"></i>
+                            <span>ยกเลิกแล้ว</span>
+                        </span>`;
+                } else {
+                    currentStep = 1;
+                    statusBadge = `
+                        <span class="bg-amber-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-bl-xl flex items-center space-x-1 shadow-sm">
+                            <i data-lucide="loader" class="w-3 h-3 animate-spin"></i>
+                            <span>กำลังเตรียมสินค้า</span>
+                        </span>`;
+                }
+
+                const getStepStyle = (stepNumber) => {
+                    if (isCancelled) return { circle: 'bg-gray-200 text-gray-400', text: 'text-gray-400 font-normal' };
+                    if (currentStep >= stepNumber) {
+                        return { 
+                            circle: 'bg-[#2B1810] text-white font-bold ring-2 ring-[#2B1810]/20', 
+                            text: 'text-[#2B1810] font-bold' 
+                        };
+                    }
+                    return { circle: 'bg-gray-100 text-gray-400 border border-gray-200', text: 'text-gray-400' };
+                };
+
+                const step1 = getStepStyle(1);
+                const step2 = getStepStyle(2);
+                const step3 = getStepStyle(3);
+
+                const items = Array.isArray(order.items) ? order.items : [];
+                const totalItemCount = items.reduce((acc, curr) => acc + (curr.quantity || curr.qty || 1), 0);
+                
+                let itemsHtml = items.map(item => {
+                    const qty = item.quantity || item.qty || 1;
+                    let singlePrice = item.price || item.itemPrice || 0;
+                    if (!singlePrice && order.totalPrice && totalItemCount > 0) {
+                        singlePrice = Math.round(order.totalPrice / totalItemCount);
+                    }
+                    const itemTotal = singlePrice * qty;
+
+                    const imgUrl = item.image || item.img || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=200&auto=format&fit=crop';
+
+                    return `
+                        <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100 last:border-none text-xs">
+                            <div class="flex items-center space-x-3 pr-2">
+                                <img src="${imgUrl}" alt="${item.name || item.title || 'สินค้า'}" class="w-12 h-12 object-cover rounded-xl border border-amber-100 flex-shrink-0 shadow-sm">
+                                <div>
+                                    <span class="font-medium text-gray-800 block">
+                                        ${qty}x ${item.name || item.title || item.itemName || 'สินค้า'} 
+                                    </span>
+                                    ${item.sweetness ? `<span class="text-amber-800/70 font-medium text-[11px]">(${item.sweetness})</span>` : ''}
+                                    ${item.type ? `<span class="text-[10px] text-gray-500 block">ตัวเลือก: ${item.type}</span>` : ''}
+                                    ${item.options ? `<span class="text-[10px] text-gray-400 block">${item.options}</span>` : ''}
+                                </div>
+                            </div>
+                            <span class="text-gray-700 font-semibold whitespace-nowrap">${itemTotal > 0 ? '฿' + itemTotal : ''}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                html += `
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-amber-100/80 shadow-sm relative overflow-hidden transition hover:shadow-md">
+                        <div class="absolute top-0 right-0">
+                            ${statusBadge}
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs text-amber-900 font-mono font-bold">#${order.id.toString().replace('#', '').substring(0, 12).toUpperCase()}</span>
+                                ${order.isLocal ? '<span class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full font-medium">ข้อมูลในเครื่อง</span>' : ''}
+                            </div>
+                            <p class="text-[10px] sm:text-[11px] text-gray-400 mt-0.5">${order.createdAt}</p>
+                        </div>
+
+                        ${!isCancelled ? `
+                        <div class="my-6 px-2">
+                            <div class="relative flex items-center justify-between">
+                                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-100 -z-0"></div>
+                                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-[#2B1810] transition-all duration-500 -z-0" 
+                                     style="width: ${currentStep === 1 ? '0%' : currentStep === 2 ? '50%' : '100%'}"></div>
+
+                                <div class="flex flex-col items-center bg-white px-1 z-10">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs transition-colors duration-300 ${step1.circle}">
+                                        <i data-lucide="chef-hat" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                                    </div>
+                                    <span class="text-[10px] sm:text-[11px] mt-1 ${step1.text}">กำลังเตรียม</span>
+                                </div>
+
+                                <div class="flex flex-col items-center bg-white px-1 z-10">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs transition-colors duration-300 ${step2.circle}">
+                                        <i data-lucide="bell" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                                    </div>
+                                    <span class="text-[10px] sm:text-[11px] mt-1 ${step2.text}">พร้อมรับ</span>
+                                </div>
+
+                                <div class="flex flex-col items-center bg-white px-1 z-10">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs transition-colors duration-300 ${step3.circle}">
+                                        <i data-lucide="check" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                                    </div>
+                                    <span class="text-[10px] sm:text-[11px] mt-1 ${step3.text}">รับแล้ว</span>
+                                </div>
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <div class="bg-amber-50/40 rounded-xl p-3 my-3">
+                            ${itemsHtml.length > 0 ? itemsHtml : '<p class="text-xs text-gray-400 text-center py-1">ไม่พบรายการสินค้า</p>'}
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs pt-1">
+                            <div class="text-gray-500 text-[11px]">
+                                ชำระเงิน: <span class="font-medium text-gray-700">${order.paymentMethod}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-gray-500 text-[11px]">ราคารวม </span>
+                                <span class="text-base font-bold text-[#2B1810]">฿${order.totalPrice}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            orderList.innerHTML = html;
+            if (window.lucide) lucide.createIcons();
+        }
+
+        window.addEventListener('storage', setupRealtimeOrders);
+        window.addEventListener('focus', setupRealtimeOrders);
+
+        clearLocalBtn.addEventListener('click', () => {
+            if (confirm("คุณแน่ใจหรือไม่ว่าต้องการล้างประวัติการสั่งซื้อในเครื่องนี้?")) {
+                ['smart_coffee_orders', 'orders', 'latest_order', 'my_orders', 'current_order', 'cart_order'].forEach(key => localStorage.removeItem(key));
+                setupRealtimeOrders();
+            }
+        });
+
+        refreshBtn.addEventListener('click', () => {
+            refreshIcon.classList.add('animate-spin');
+            setupRealtimeOrders();
+            setTimeout(() => {
+                refreshIcon.classList.remove('animate-spin');
+            }, 600);
+        });
+
+        async function handleSignOut() {
+            try {
+                await signOut(auth);
+                window.location.reload();
+            } catch (error) {
+                console.error("Logout Error:", error);
+            }
+        }
+    </script>
+</body>
+</html>
