@@ -90,7 +90,6 @@
             <button onclick="filterCategory('ทั้งหมด')" class="category-btn whitespace-nowrap bg-[#4e342e] text-amber-50 font-medium px-5 py-2.5 rounded-full text-xs shadow-md shadow-stone-900/5 transition duration-200">ทั้งหมด</button>
             <button onclick="filterCategory('กาแฟ')" class="category-btn whitespace-nowrap bg-white/80 text-stone-600 hover:bg-white border border-stone-200/60 font-medium px-5 py-2.5 rounded-full text-xs transition duration-200">กาแฟ (Coffee)</button>
             <button onclick="filterCategory('ชา')" class="category-btn whitespace-nowrap bg-white/80 text-stone-600 hover:bg-white border border-stone-200/60 font-medium px-5 py-2.5 rounded-full text-xs transition duration-200">ชา (Tea)</button>
-            <button onclick="filterCategory('เครื่องดื่มปั่น')" class="category-btn whitespace-nowrap bg-white/80 text-stone-600 hover:bg-white border border-stone-200/60 font-medium px-5 py-2.5 rounded-full text-xs transition duration-200">เครื่องดื่มปั่น (Frappe)</button>
             <button onclick="filterCategory('อาหาร')" class="category-btn whitespace-nowrap bg-white/80 text-stone-600 hover:bg-white border border-stone-200/60 font-medium px-5 py-2.5 rounded-full text-xs transition duration-200">อาหาร (Food)</button>
             <button onclick="filterCategory('เบเกอรี่')" class="category-btn whitespace-nowrap bg-white/80 text-stone-600 hover:bg-white border border-stone-200/60 font-medium px-5 py-2.5 rounded-full text-xs transition duration-200">เบเกอรี่ (Bakery)</button>
             <button onclick="filterCategory('ของหวาน')" class="category-btn whitespace-nowrap bg-white/80 text-stone-600 hover:bg-white border border-stone-200/60 font-medium px-5 py-2.5 rounded-full text-xs transition duration-200">ของหวาน (Dessert)</button>
@@ -214,7 +213,7 @@
                 </div>
             </div>
 
-            <!-- เพิ่มตัวเลือก ถุงเก็บความเย็น (เพิ่มเติม) -->
+            <!-- เพิ่มตัวเลือก ถุงเก็บความเย็น -->
             <div>
                 <label class="block text-xs font-semibold text-stone-700 mb-2.5">บรรจุภัณฑ์พิเศษ</label>
                 <div class="space-y-2 text-xs">
@@ -381,133 +380,112 @@
     <script>
         const PROMPTPAY_ID = "0812345678";
 
+        // รายการสินค้าทั้งหมด
         const menuItems = [
-            // กาแฟ
+            // --- กาแฟ ---
             { id: 'c1', name: 'เอสเพรสโซ่', price: 60, category: 'กาแฟ', isPopular: true, imgUrl: 'https://www.nestleprofessional.co.th/sites/default/files/styles/np_recipe_detail/public/2022-04/nescafe-iced-signature-540x400.jpg?itok=5gl_au1G', desc: 'กาแฟเอสเพรสโซ่รสชาติเข้มข้นสไตล์ไทย หวานมันกลมกล่อมกำลังดี' },
             { id: 'c2', name: 'คาปูชิโน่', price: 60, category: 'กาแฟ', isPopular: false, imgUrl: 'https://aroifin.com/wp-content/uploads/2025/09/170925-homemade-cappuccino-recipe-02.webp', desc: 'กาแฟนมรสชาตินุ่มละมุน ท็อปด้านบนด้วยฟองนมนุ่มหนาโรยผงซินนามอน' },
             { id: 'c3', name: 'อเมริกาโน่', price: 60, category: 'กาแฟ', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?q=80&w=500&auto=format&fit=crop', desc: 'กาแฟดำอาราบิก้าแท้ 100% รสชาติเข้มสะอาด ดื่มแล้วสดชื่นตลอดวัน' },
+            { id: 'c5', name: 'คาราเมลคอฟฟี่', price: 60, category: 'กาแฟ', isPopular: true, imgUrl: 'https://cdn.shopify.com/s/files/1/0778/0591/2351/files/ice_caramel_macchiato_09a92818-b343-42ba-9a2e-6729e18cf9c1_1024x1024.jpg?v=1738157652', desc: 'เอสเพรสโซ่ช็อตคู่กับซอสคาราเมลโฮมเมดหอมละมุน' },
             
-            // เครื่องดื่มปั่น
-            { id: 'f1', name: 'ช็อกโกแลต', price: 60, category: 'เครื่องดื่มปั่น', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=500&auto=format&fit=crop', desc: 'ช็อกโกแลตเบลเยียมเข้มข้น หอมหวานกลมกล่อม' },
-            { id: 'f2', name: 'คาราเมลคอฟฟี่', price: 60, category: 'เครื่องดื่มปั่น', isPopular: true, imgUrl: 'https://cdn.shopify.com/s/files/1/0778/0591/2351/files/ice_caramel_macchiato_09a92818-b343-42ba-9a2e-6729e18cf9c1_1024x1024.jpg?v=1738157652', desc: 'เอสเพรสโซ่ช็อตคู่กับซอสคาราเมลโฮมเมดหอมละมุน' },
-            { id: 'f3', name: 'มัทฉะกรีนที', price: 60, category: 'เครื่องดื่มปั่น', isPopular: false, imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQqZV3p_GoOZstEkTml7_3J7vY8-qVfd6ie1im9YntZA&s', desc: 'มัทฉะอูจิแท้ 100% หอมเข้มข้นรสชาติต้นตำรับ' },
-            { id: 'f4', name: 'สตรอว์เบอร์รี่โยเกิร์ต', price: 60, category: 'เครื่องดื่มปั่น', isPopular: false, imgUrl: 'https://api2.krua.co/wp-content/uploads/2020/07/RD0196_Gallery_-02-scaled.jpg', desc: 'สตรอว์เบอร์รี่หวานซ่อนเปรี้ยวคู่กับโยเกิร์ตธรรมชาติ' },
-            
-            // ชา
+            // --- ชา ---
             { id: 'm1', name: 'ชาไทยนม', price: 60, category: 'ชา', isPopular: true, imgUrl: 'https://cms.dmpcdn.com/food/2021/05/05/00a9fe30-ad7d-11eb-a73b-c395e0dfc07b_original.jpg', desc: 'ชาไทยสูตรโบราณ กลิ่นหอมเป็นเอกลักษณ์ ผสมนมสดแท้รสชาติเข้มข้นกลมกล่อม' },
             { id: 'm2', name: 'ชานมใต้หวัน', price: 60, category: 'ชา', isPopular: true, imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2xqmPkBXcWDZYx0J8Ih-VGcptwt7qZCV4W2C-_e1Gmg&s=10', desc: 'เบสชาดำหรือชาอู่หลง ผสมกับนมสดหรือครีมเทียม มีรสชาติกลมกล่อม' },
-            { id: 'm3', name: 'ชาดำ', price: 60, category: 'ชา', isPopular: true, imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_M8kZ7fg1368T-y9Aia7z4oSqV3Lzw8onXCPrToK9zQ&s=10', desc: 'รสชาติเข้มข้น และมีกลิ่นหอมเป็นเอกลักษณ์' },
-            
-            // อาหาร
-            { id: 'fd1', name: 'แซนด์วิชแฮมชีส', price: 55, category: 'อาหาร', isPopular: true, imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtzHBZ03P9slMpnvS2oT1ws8HVSArkI8ruBIpHnft0nd8d4Azjq0H_ZjYh&s=10', desc: 'ขนมปังปิ้งกรอบนอกนุ่มใน สอดไส้แฮมคุณภาพพรีเมียมและชีสเยิ้มๆ' },
-            { id: 'fd2', name: 'แซนด์วิชทูน่าชีส', price: 55, category: 'อาหาร', isPopular: false, imgUrl: 'https://www.pholfoodmafia.com/wp-content/uploads/2022/06/5Healthy-TunaEgg-Grilled-Cheese.jpg', desc: 'ทูน่าคลุกซอสมายองเนสรสกลมกล่อม พร้อมชีสแผ่นอบร้อน' },
-            { id: 'fd3', name: 'แซนด์วิชผักโขมอบชีส', price: 65, category: 'อาหาร', isPopular: true, imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcg3USIPq58zi6Pqyzwwgov8vuvnCd8wZXzsn-NMPMJg&s=10', desc: 'ผักโขมอบชีสมอสซาเรลล่าหอมนุ่ม ยืดละมุนลิ้น' },
-            { id: 'fd4', name: 'เฟรนช์ฟรายส์', price: 50, category: 'อาหาร', isPopular: false, imgUrl: 'https://s359.kapook.com/pagebuilder/f6558105-e6e7-419b-a04d-edb108647bb1.jpg', desc: 'มันฝรั่งทอดกรอบทอง เสิร์ฟพร้อมดิปปิ้งซอสมะเขือเทศและมายองเนส' },
-            { id: 'fd5', name: 'ไก่ป๊อป', price: 59, category: 'อาหาร', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=500&auto=format&fit=crop', desc: 'เนื้อไก่ชิ้นคำโตกรอบนอกนุ่มใน โรยผงปรุงรสสไปซี่สุดลงตัว' },
-            { id: 'fd6', name: 'แซนด์วิชผัก', price: 59, category: 'อาหาร', isPopular: true, imgUrl: 'https://saladcreator.club/wp-content/uploads/2022/03/%E0%B9%81%E0%B8%8B%E0%B8%99%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%AE%E0%B8%A1%E0%B8%8A%E0%B8%B5%E0%B8%AA-%E0%B8%AA%E0%B8%A5%E0%B8%B1%E0%B8%94%E0%B8%84%E0%B8%A3%E0%B8%B5%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C.jpg', desc: 'เป็นแซนด์วิชผัก เพื่อสุขภาพ' },
 
-            // เบเกอรี่
-            { id: 'b1', name: 'ครัวซองต์เนยสด', price: 40, category: 'เบเกอรี่', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=500&auto=format&fit=crop', desc: 'ครัวซองต์อบใหม่ร้อนๆ ผิวกรอบนอกนุ่มใน หอมกลิ่นเนยสดแท้ฝรั่งเศส' },
-            { id: 'b2', name: 'บลูเบอร์รี่ชีสพาย', price: 40, category: 'เบเกอรี่', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=500&auto=format&fit=crop', desc: 'Blueberry Cheese Pie ครีมชีสเนียนนุ่มราดซอสบลูเบอร์รี่เข้มข้น' },
-            { id: 'b3', name: 'ช็อกโกแลตบราวนี่', price: 40, category: 'เบเกอรี่', isPopular: false, imgUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=500&auto=format&fit=crop', desc: 'บราวนี่เนื้อหนึบ (Fudgy) รสช็อกโกแลตแท้เข้มข้น หวานกำลังดี' },
-            { id: 'b4', name: 'เค้กแครอทพรีเมียม', price: 40, category: 'เบเกอรี่', isPopular: false, imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsCyomolHaW-P0tbI5t3sGUh3fBVP3bL7ouks1jrWYvA&s=10', desc: 'Carrot Cake เนื้อเค้กฉ่ำนุ่มผสมเนื้อแครอทและถั่ววอลนัท' },
+            // --- อาหารคาว ---
+            { id: 'fd1', name: 'สปาเก็ตตี้คาโบนาร่า', price: 79, category: 'อาหาร', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=500&auto=format&fit=crop', desc: 'สปาเก็ตตี้ครีมซอสคาโบนาร่าเข้มข้น หอมกลิ่นชีสและเบคอนกรอบ' },
 
-            // ของหวาน
-            { id: 'ds1', name: 'วอฟเฟิลอบสด', price: 69, category: 'ของหวาน', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?q=80&w=500&auto=format&fit=crop', desc: 'วอฟเฟิลอบสดใหม่ หอมนุ่ม เสิร์ฟพร้อมไอศกรีมและน้ำผึ้ง' }
+            // --- เบเกอรี่ ---
+            { id: 'bk1', name: 'ครัวซองต์เนยสด', price: 55, category: 'เบเกอรี่', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=500&auto=format&fit=crop', desc: 'ครัวซองต์อบใหม่ กรอบนอกนุ่มใน หอมเนยสดนำเข้า' },
+            { id: 'bk2', name: 'ชีสเค้กหน้าไหม้', price: 85, category: 'เบเกอรี่', isPopular: false, imgUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=500&auto=format&fit=crop', desc: 'ชีสเค้กเนื้อเนียนนุ่ม หอมกลิ่นไหม้เอกลักษณ์เฉพาะตัว' },
+
+            // --- ของหวาน ---
+            { id: 'ds1', name: 'บราวนี่ไอศกรีม', price: 75, category: 'ของหวาน', isPopular: true, imgUrl: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=500&auto=format&fit=crop', desc: 'บราวนี่ช็อกโกแลตเข้มข้น เสิร์ฟคู่กับไอศกรีมวานิลลาสดชื่น' }
         ];
 
         let cart = [];
-        let currentSelectedItem = null;
+        let selectedItem = null;
         let activeCategory = 'ทั้งหมด';
 
-        function renderMenu(items) {
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+            updateCartUI();
+            lucide.createIcons();
+        });
+
+        // แสดงผลเมนู
+        function renderMenu() {
             const grid = document.getElementById('menu-grid');
-            grid.innerHTML = '';
+            const searchVal = document.getElementById('search-input').value.toLowerCase();
             
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "soft-card rounded-3xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between group";
-                
-                card.innerHTML = `
+            const filtered = menuItems.filter(item => {
+                const matchCategory = activeCategory === 'ทั้งหมด' || item.category === activeCategory;
+                const matchSearch = item.name.toLowerCase().includes(searchVal) || item.desc.toLowerCase().includes(searchVal);
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-stone-400 font-light">ไม่พบรายการที่ค้นหา</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="soft-card rounded-3xl overflow-hidden flex flex-col justify-between p-3 sm:p-4 hover:shadow-xl transition duration-300">
                     <div>
-                        <div class="relative overflow-hidden aspect-[4/3]">
-                            <img src="${item.imgUrl}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            ${item.isPopular ? `<span class="absolute top-3 left-3 bg-amber-900/80 backdrop-blur-md text-amber-100 text-[10px] font-medium px-2.5 py-1 rounded-full border border-amber-300/30">ยอดนิยม</span>` : ''}
+                        <div class="relative h-32 sm:h-40 rounded-2xl overflow-hidden mb-3">
+                            <img src="${item.imgUrl}" alt="${item.name}" class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
+                            ${item.isPopular ? `<span class="absolute top-2 left-2 bg-amber-800/90 text-amber-100 text-[10px] px-2.5 py-1 rounded-full backdrop-blur-md">ยอดฮิต</span>` : ''}
                         </div>
-                        <div class="p-4 sm:p-5">
-                            <h3 class="font-medium text-sm sm:text-base text-stone-800 line-clamp-1">${item.name}</h3>
-                            <p class="text-[11px] sm:text-xs text-stone-400 font-light mt-1 line-clamp-2 leading-relaxed">${item.desc}</p>
-                        </div>
+                        <h3 class="font-semibold text-sm text-stone-800 mb-1">${item.name}</h3>
+                        <p class="text-[11px] text-stone-500 line-clamp-2 font-light leading-relaxed mb-3">${item.desc}</p>
                     </div>
-                    <div class="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 flex justify-between items-center">
-                        <span class="text-amber-900 font-semibold text-sm sm:text-base">฿${item.price}</span>
-                        <button onclick="openModal('${item.id}')" class="bg-[#4e342e] hover:bg-[#3e271c] text-amber-50 p-2.5 rounded-2xl transition shadow-md shadow-stone-900/5 active:scale-95">
+                    <div class="flex items-center justify-between pt-2 border-t border-stone-100">
+                        <span class="font-bold text-amber-900 text-sm">฿${item.price}</span>
+                        <button onclick="openOptionModal('${item.id}')" class="bg-[#4e342e] text-amber-50 p-2 rounded-xl hover:bg-[#3e271c] transition active:scale-95 shadow-md">
                             <i data-lucide="plus" class="w-4 h-4"></i>
                         </button>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
+                </div>
+            `).join('');
+
             lucide.createIcons();
         }
 
         function filterCategory(cat) {
             activeCategory = cat;
             document.querySelectorAll('.category-btn').forEach(btn => {
-                if(btn.innerText.includes(cat)) {
-                    btn.className = "category-btn whitespace-nowrap bg-[#4e342e] text-amber-50 font-medium px-5 py-2.5 rounded-full text-xs shadow-md shadow-stone-900/5 transition duration-200";
+                if(btn.innerText.includes(cat) || (cat === 'ทั้งหมด' && btn.innerText === 'ทั้งหมด')) {
+                    btn.className = "category-btn whitespace-nowrap bg-[#4e342e] text-amber-50 font-medium px-5 py-2.5 rounded-full text-xs shadow-md transition duration-200";
                 } else {
                     btn.className = "category-btn whitespace-nowrap bg-white/80 text-stone-600 hover:bg-white border border-stone-200/60 font-medium px-5 py-2.5 rounded-full text-xs transition duration-200";
                 }
             });
-
-            if (cat === 'ทั้งหมด') {
-                renderMenu(menuItems);
-            } else {
-                renderMenu(menuItems.filter(i => i.category === cat));
-            }
+            renderMenu();
         }
 
         function filterMenu() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const filtered = menuItems.filter(item => 
-                (activeCategory === 'ทั้งหมด' || item.category === activeCategory) &&
-                (item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query))
-            );
-            renderMenu(filtered);
+            renderMenu();
         }
 
-        function openModal(id) {
-            currentSelectedItem = menuItems.find(i => i.id === id);
-            
-            if (['กาแฟ', 'ชา', 'เครื่องดื่มปั่น'].includes(currentSelectedItem.category)) {
-                document.getElementById('modal-item-name').innerText = currentSelectedItem.name;
-                document.getElementById('modal-item-base-price').innerText = `ราคาเริ่มต้น ฿${currentSelectedItem.price}`;
-                
-                // reset form
-                document.getElementById('drink-iced').checked = true;
-                const sweetnessList = document.getElementsByName('sweetness');
-                sweetnessList[2].checked = true; // 50%
-                const milkList = document.getElementsByName('milk');
-                milkList[1].checked = true; // นมสด
+        // จัดการ Modal ตัวเลือก
+        function openOptionModal(id) {
+            selectedItem = menuItems.find(i => i.id === id);
+            if (!selectedItem) return;
+
+            if (selectedItem.category === 'กาแฟ' || selectedItem.category === 'ชา') {
+                document.getElementById('modal-item-name').innerText = selectedItem.name;
+                document.getElementById('modal-item-base-price').innerText = `฿${selectedItem.price}`;
+                document.getElementById('modal-note').value = '';
                 document.getElementById('add-shot').checked = false;
                 document.getElementById('add-whip').checked = false;
-                if (document.getElementById('add-cool-bag')) {
-                    document.getElementById('add-cool-bag').checked = false;
-                }
-                document.getElementById('modal-note').value = '';
-
+                document.getElementById('add-cool-bag').checked = false;
                 updateDrinkModalPrice();
                 document.getElementById('option-modal').classList.remove('hidden');
             } else {
-                document.getElementById('food-modal-item-name').innerText = currentSelectedItem.name;
-                document.getElementById('food-modal-item-base-price').innerText = `ราคา ฿${currentSelectedItem.price}`;
-                
-                const heatingList = document.getElementsByName('heating-option');
-                heatingList[0].checked = true;
+                document.getElementById('food-modal-item-name').innerText = selectedItem.name;
+                document.getElementById('food-modal-item-base-price').innerText = `฿${selectedItem.price}`;
                 document.getElementById('food-modal-note').value = '';
-
-                document.getElementById('food-modal-total-btn-price').innerText = `฿${currentSelectedItem.price}`;
+                document.getElementById('food-modal-total-btn-price').innerText = `฿${selectedItem.price}`;
                 document.getElementById('food-option-modal').classList.remove('hidden');
             }
         }
@@ -521,189 +499,188 @@
         }
 
         function updateDrinkModalPrice() {
-            let total = currentSelectedItem.price;
+            if (!selectedItem) return;
+            let total = selectedItem.price;
 
             const drinkType = document.querySelector('input[name="drink-type"]:checked');
-            if (drinkType) total += parseInt(drinkType.getAttribute('data-price'));
+            if (drinkType) total += parseInt(drinkType.dataset.price || 0);
 
             const milk = document.querySelector('input[name="milk"]:checked');
-            if (milk) total += parseInt(milk.getAttribute('data-price'));
+            if (milk) total += parseInt(milk.dataset.price || 0);
 
-            if (document.getElementById('add-shot').checked) total += parseInt(document.getElementById('add-shot').getAttribute('data-price'));
-            if (document.getElementById('add-whip').checked) total += parseInt(document.getElementById('add-whip').getAttribute('data-price'));
-            if (document.getElementById('add-cool-bag') && document.getElementById('add-cool-bag').checked) {
-                total += parseInt(document.getElementById('add-cool-bag').getAttribute('data-price'));
-            }
+            if (document.getElementById('add-shot').checked) total += 15;
+            if (document.getElementById('add-whip').checked) total += 10;
+            if (document.getElementById('add-cool-bag').checked) total += 15;
 
             document.getElementById('modal-total-btn-price').innerText = `฿${total}`;
         }
 
+        // การเพิ่มสินค้าเข้าตะกร้า
         function confirmAddDrinkToCart() {
             const drinkType = document.querySelector('input[name="drink-type"]:checked').value;
             const sweetness = document.querySelector('input[name="sweetness"]:checked').value;
             const milk = document.querySelector('input[name="milk"]:checked').value;
             
             let extras = [];
-            if (document.getElementById('add-shot').checked) extras.push("เพิ่มช็อตกาแฟ");
-            if (document.getElementById('add-whip').checked) extras.push("วิปครีม");
-            if (document.getElementById('add-cool-bag') && document.getElementById('add-cool-bag').checked) {
-                extras.push("ใส่ถุงเก็บความเย็น");
-            }
-
+            if (document.getElementById('add-shot').checked) extras.push('เพิ่มช็อตกาแฟ');
+            if (document.getElementById('add-whip').checked) extras.push('วิปครีม');
+            if (document.getElementById('add-cool-bag').checked) extras.push('ถุงเก็บความเย็น');
+            
             const note = document.getElementById('modal-note').value.trim();
 
-            let itemPrice = currentSelectedItem.price;
-            itemPrice += parseInt(document.querySelector('input[name="drink-type"]:checked').getAttribute('data-price'));
-            itemPrice += parseInt(document.querySelector('input[name="milk"]:checked').getAttribute('data-price'));
-            if (document.getElementById('add-shot').checked) itemPrice += 15;
-            if (document.getElementById('add-whip').checked) itemPrice += 10;
-            if (document.getElementById('add-cool-bag') && document.getElementById('add-cool-bag').checked) itemPrice += 15;
+            let unitPrice = selectedItem.price;
+            unitPrice += parseInt(document.querySelector('input[name="drink-type"]:checked').dataset.price || 0);
+            unitPrice += parseInt(document.querySelector('input[name="milk"]:checked').dataset.price || 0);
+            if (document.getElementById('add-shot').checked) unitPrice += 15;
+            if (document.getElementById('add-whip').checked) unitPrice += 10;
+            if (document.getElementById('add-cool-bag').checked) unitPrice += 15;
+
+            let optionText = `${drinkType} | หวาน ${sweetness}`;
+            if (milk !== 'ไม่ใส่นม' && milk !== 'นมสด') optionText += ` | ${milk}`;
+            if (extras.length > 0) optionText += ` | ${extras.join(', ')}`;
+            if (note) optionText += ` (${note})`;
 
             cart.push({
-                cartId: Date.now(),
-                name: `${currentSelectedItem.name} (${drinkType})`,
-                basePrice: itemPrice,
-                details: `หวาน ${sweetness}${milk !== 'ไม่ใส่นม' ? `, ${milk}` : ''}${extras.length > 0 ? `, ${extras.join(', ')}` : ''}`,
-                note: note,
+                name: selectedItem.name,
+                price: unitPrice,
+                options: optionText,
                 quantity: 1
             });
 
             closeOptionModal();
             updateCartUI();
+            toggleCart();
         }
 
         function confirmAddFoodToCart() {
             const heating = document.querySelector('input[name="heating-option"]:checked').value;
             const note = document.getElementById('food-modal-note').value.trim();
 
+            let optionText = heating;
+            if (note) optionText += ` (${note})`;
+
             cart.push({
-                cartId: Date.now(),
-                name: currentSelectedItem.name,
-                basePrice: currentSelectedItem.price,
-                details: `บริการ: ${heating}`,
-                note: note,
+                name: selectedItem.name,
+                price: selectedItem.price,
+                options: optionText,
                 quantity: 1
             });
 
             closeFoodModal();
             updateCartUI();
+            toggleCart();
         }
 
         function updateCartUI() {
-            const cartItemsList = document.getElementById('cart-items-list');
-            const cartCount = document.getElementById('cart-count');
-            const cartTotalPrice = document.getElementById('cart-total-price');
-            const paymentBlock = document.getElementById('payment-selection-block');
+            const list = document.getElementById('cart-items-list');
+            const countEl = document.getElementById('cart-count');
+            const totalEl = document.getElementById('cart-total-price');
+            const payBlock = document.getElementById('payment-selection-block');
 
-            const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
-            cartCount.innerText = totalItems;
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            countEl.innerText = totalCount;
+            totalEl.innerText = `฿${totalPrice}`;
 
             if (cart.length === 0) {
-                cartItemsList.innerHTML = `
+                list.innerHTML = `
                     <div id="empty-cart-msg" class="text-center py-20 text-stone-400 space-y-3">
                         <i data-lucide="shopping-cart" class="w-12 h-12 mx-auto stroke-1 opacity-50"></i>
                         <p class="text-xs font-light">ยังไม่มีสินค้าในตะกร้าของคุณ</p>
-                    </div>
-                `;
-                paymentBlock.classList.add('hidden');
-                cartTotalPrice.innerText = '฿0';
-                lucide.createIcons();
-                return;
-            }
-
-            paymentBlock.classList.remove('hidden');
-            cartItemsList.innerHTML = '';
-            let total = 0;
-
-            cart.forEach(item => {
-                const subtotal = item.basePrice * item.quantity;
-                total += subtotal;
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "bg-white p-4 rounded-2xl border border-stone-200/60 shadow-sm flex flex-col justify-between space-y-2";
-                itemDiv.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div>
+                    </div>`;
+                payBlock.classList.add('hidden');
+            } else {
+                payBlock.classList.remove('hidden');
+                list.innerHTML = cart.map((item, idx) => `
+                    <div class="flex items-center justify-between p-3.5 bg-stone-50 rounded-2xl border border-stone-200/60 shadow-sm">
+                        <div class="space-y-0.5 max-w-[65%]">
                             <h4 class="font-medium text-xs text-stone-800">${item.name}</h4>
-                            <p class="text-[10px] text-stone-400 font-light mt-0.5">${item.details}</p>
-                            ${item.note ? `<p class="text-[10px] text-amber-800/70 italic mt-0.5">"${item.note}"</p>` : ''}
+                            <p class="text-[10px] text-stone-400 leading-tight">${item.options}</p>
+                            <span class="text-xs font-semibold text-amber-900 block pt-1">฿${item.price * item.quantity}</span>
                         </div>
-                        <span class="font-semibold text-xs text-amber-900">฿${subtotal}</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-2 border-t border-stone-100">
-                        <div class="flex items-center space-x-2 bg-stone-50 rounded-xl p-1 border border-stone-200/40">
-                            <button onclick="changeQty(${item.cartId}, -1)" class="w-6 h-6 rounded-lg bg-white shadow-xs flex items-center justify-center text-stone-600 hover:bg-stone-100 text-xs font-semibold">-</button>
-                            <span class="text-xs font-medium px-1 text-stone-700">${item.quantity}</span>
-                            <button onclick="changeQty(${item.cartId}, 1)" class="w-6 h-6 rounded-lg bg-white shadow-xs flex items-center justify-center text-stone-600 hover:bg-stone-100 text-xs font-semibold">+</button>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeQty(${idx}, -1)" class="w-6 h-6 rounded-lg bg-white border border-stone-200 text-stone-600 flex items-center justify-center hover:bg-stone-100 text-xs font-bold">-</button>
+                            <span class="text-xs font-medium w-4 text-center">${item.quantity}</span>
+                            <button onclick="changeQty(${idx}, 1)" class="w-6 h-6 rounded-lg bg-white border border-stone-200 text-stone-600 flex items-center justify-center hover:bg-stone-100 text-xs font-bold">+</button>
                         </div>
-                        <button onclick="removeItem(${item.cartId})" class="text-rose-400 hover:text-rose-600 p-1">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
                     </div>
-                `;
-                cartItemsList.appendChild(itemDiv);
-            });
-
-            cartTotalPrice.innerText = `฿${total}`;
+                `).join('');
+            }
             lucide.createIcons();
         }
 
-        function changeQty(cartId, delta) {
-            const item = cart.find(i => i.cartId === cartId);
-            if (item) {
-                item.quantity += delta;
-                if (item.quantity <= 0) {
-                    removeItem(cartId);
-                } else {
-                    updateCartUI();
-                }
-            }
-        }
-
-        function removeItem(cartId) {
-            cart = cart.filter(i => i.cartId !== cartId);
+        function changeQty(idx, delta) {
+            cart[idx].quantity += delta;
+            if (cart[idx].quantity <= 0) cart.splice(idx, 1);
             updateCartUI();
         }
 
         function toggleCart() {
             const sidebar = document.getElementById('cart-sidebar');
             const overlay = document.getElementById('cart-overlay');
-            sidebar.classList.toggle('translate-x-full');
-            overlay.classList.toggle('hidden');
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            }
         }
 
+        // *** บันทึกคำสั่งซื้อลง LocalStorage สำหรับนำไปเปิดใน orders.html ***
         function submitOrder() {
-            if (cart.length === 0) return;
+            if (cart.length === 0) {
+                alert("กรุณาเลือกสินค้าลงตะกร้าก่อนสั่งซื้อ");
+                return;
+            }
 
             const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
-            const total = cart.reduce((sum, i) => sum + (i.basePrice * i.quantity), 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // สุ่ม Order ID
+            const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+            const now = new Date();
+            const dateTimeStr = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
 
-            document.getElementById('summary-payment-method').innerText = paymentMethod === 'PromptPay' ? 'PromptPay (QR Code)' : 'ชำระที่เคาน์เตอร์';
-            document.getElementById('summary-total-price').innerText = `฿${total}`;
+            // สร้างก้อนข้อมูล
+            const newOrder = {
+                orderId: orderId,
+                dateTime: dateTimeStr,
+                items: [...cart],
+                totalPrice: totalPrice,
+                status: 'pending', // สถานะเริ่มต้น
+                paymentMethod: paymentMethod === 'PromptPay' ? 'พร้อมเพย์ (สแกน QR)' : 'ชำระเงินที่เคาน์เตอร์'
+            };
+
+            // ดึงข้อมูลเดิมจาก localStorage มาเพิ่มต่อ
+            let existingOrders = JSON.parse(localStorage.getItem('smart_coffee_orders')) || [];
+            existingOrders.unshift(newOrder);
+            localStorage.setItem('smart_coffee_orders', JSON.stringify(existingOrders));
+
+            // แสดงหน้าสั่งซื้อสำเร็จ
+            document.getElementById('summary-payment-method').innerText = newOrder.paymentMethod;
+            document.getElementById('summary-total-price').innerText = `฿${totalPrice}`;
 
             const qrContainer = document.getElementById('promptpay-qr-container');
             if (paymentMethod === 'PromptPay') {
-                const qrUrl = `https://promptpay.io/${PROMPTPAY_ID}/${total}.png`;
-                document.getElementById('promptpay-qr-img').src = qrUrl;
+                document.getElementById('promptpay-qr-img').src = `https://promptpay.io/${PROMPTPAY_ID}/${totalPrice}.png`;
                 qrContainer.classList.remove('hidden');
             } else {
                 qrContainer.classList.add('hidden');
             }
 
-            toggleCart();
-            document.getElementById('order-success-modal').classList.remove('hidden');
-            
-            // Clear cart
+            // ล้างตะกร้าสินค้า
             cart = [];
             updateCartUI();
+            toggleCart();
+
+            document.getElementById('order-success-modal').classList.remove('hidden');
         }
 
         function closeSuccessModal() {
             document.getElementById('order-success-modal').classList.add('hidden');
         }
-
-        // Initialize Menu
-        renderMenu(menuItems);
     </script>
 </body>
 </html>
